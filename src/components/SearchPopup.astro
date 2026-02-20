@@ -10,6 +10,7 @@ const posts = (await getCollection('blog'))
 		title: post.data.title,
 		slug: post.slug,
 		description: post.data.description,
+		category: post.data.category ?? '',
 		heroImage: post.data.heroImage,
 	}));
 ---
@@ -26,7 +27,7 @@ const posts = (await getCollection('blog'))
 
 		<div class="search-popup-content">
 			<div class="search-popup-input-area">
-				<Input placeholder="아티클 제목을 검색해보세요." className="input" />
+				<Input placeholder="제목, 설명, 카테고리를 검색해보세요." className="input" />
 			</div>
 			<ul class="search-popup-list">
 				<li class="search-popup-item-empty">검색어를 입력하면 결과가 표시됩니다.</li>
@@ -101,7 +102,13 @@ const posts = (await getCollection('blog'))
 			return;
 		}
 
-		const filteredPosts = searchPosts.filter((post) => post.title.toLowerCase().includes(normalizedQuery));
+		const filteredPosts = searchPosts.filter((post) => {
+			const title = (post.title ?? '').toLowerCase();
+			const description = (post.description ?? '').toLowerCase();
+			const category = (post.category ?? '').toLowerCase();
+
+			return title.includes(normalizedQuery) || description.includes(normalizedQuery) || category.includes(normalizedQuery);
+		});
 
 		if (!filteredPosts.length) {
 			renderEmptyMessage('검색 결과가 없습니다.');
