@@ -2,11 +2,20 @@
 import LogoWrapper from './LogoWrapper.astro';
 import PopupClose from './icons/PopupClose.astro';
 import Input from './Input.astro';
+import { getCollection } from 'astro:content';
 
-const {} = Astro.props;
+const posts = (await getCollection('blog'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.map((post) => ({
+		title: post.data.title,
+		slug: post.slug,
+		description: post.data.description,
+		category: post.data.category ?? '',
+		heroImage: post.data.heroImage,
+	}));
 ---
 
-<div id="search-popup" class="search-popup">
+<div id="search-popup" class="search-popup" data-posts={JSON.stringify(posts)}>
 	<div class="search-popup-inner">
 		<header class="search-popup-header">
 			<LogoWrapper type="search-popup" />
@@ -18,10 +27,10 @@ const {} = Astro.props;
 
 		<div class="search-popup-content">
 			<div class="search-popup-input-area">
-				<Input placeholder="아티클 제목을 검색해보세요." />
+				<Input placeholder="제목, 설명, 카테고리를 검색해보세요." className="input" />
 			</div>
 			<ul class="search-popup-list">
-				<li class="search-popup-item"></li>
+				<li class="search-popup-item-empty">검색어를 입력하면 결과가 표시됩니다.</li>
 			</ul>
 		</div>
 	</div>
@@ -31,12 +40,106 @@ const {} = Astro.props;
 	const btnSearch = document.getElementById('btn-search');
 	const searchPopup = document.getElementById('search-popup');
 	const btnClose = document.querySelector('.search-popup-close');
+	const searchInput = document.querySelector('.search-popup-input-area .input');
+	const searchList = document.querySelector('.search-popup-list');
+	const searchPosts = JSON.parse(searchPopup?.dataset?.posts ?? '[]');
 
-	btnSearch.addEventListener('click', () => {
+	const createPostItem = (post) => {
+		const item = document.createElement('li');
+		item.className = 'search-popup-item';
+
+		const link = document.createElement('a');
+		link.className = 'search-popup-link';
+		link.href = `/posts/${post.slug}`;
+
+		const textArea = document.createElement('div');
+		textArea.className = 'search-popup-text-area';
+
+		const title = document.createElement('strong');
+		title.className = 'search-popup-title';
+		title.textContent = post.title;
+
+		const description = document.createElement('p');
+		description.className = 'search-popup-description';
+		description.textContent = post.description;
+
+		textArea.append(title, description);
+		link.append(textArea);
+
+		const thumbnail = document.createElement('img');
+		thumbnail.className = 'search-popup-thumbnail';
+		thumbnail.src = post.heroImage || '/og.png';
+		thumbnail.alt = `${post.title} 썸네일`;
+		thumbnail.loading = 'lazy';
+		thumbnail.decoding = 'async';
+		thumbnail.width = 84;
+		thumbnail.height = 84;
+		thumbnail.onerror = () => {
+			thumbnail.src = '/og.png';
+		};
+
+		link.append(thumbnail);
+
+		item.append(link);
+		return item;
+	};
+
+	const renderEmptyMessage = (message) => {
+		searchList.innerHTML = '';
+
+		const emptyItem = document.createElement('li');
+		emptyItem.className = 'search-popup-item-empty';
+		emptyItem.textContent = message;
+
+		searchList.append(emptyItem);
+	};
+
+
+	const resetSearch = () => {
+		if (searchInput) {
+			searchInput.value = '';
+		}
+		renderEmptyMessage('검색어를 입력하면 결과가 표시됩니다.');
+	};
+
+	const renderPostList = (query) => {
+		const normalizedQuery = query.trim().toLowerCase();
+
+		if (!normalizedQuery) {
+			renderEmptyMessage('검색어를 입력하면 결과가 표시됩니다.');
+			return;
+		}
+
+		const filteredPosts = searchPosts.filter((post) => {
+			const title = (post.title ?? '').toLowerCase();
+			const description = (post.description ?? '').toLowerCase();
+			const category = (post.category ?? '').toLowerCase();
+
+			return title.includes(normalizedQuery) || description.includes(normalizedQuery) || category.includes(normalizedQuery);
+		});
+
+		if (!filteredPosts.length) {
+			renderEmptyMessage('검색 결과가 없습니다.');
+			return;
+		}
+
+		searchList.innerHTML = '';
+		filteredPosts.forEach((post) => {
+			searchList.append(createPostItem(post));
+		});
+	};
+
+	btnSearch?.addEventListener('click', () => {
 		searchPopup.classList.add('active');
+		searchInput?.focus();
 	});
 
-	btnClose.addEventListener('click', () => {
+	btnClose?.addEventListener('click', () => {
 		searchPopup.classList.remove('active');
+		resetSearch();
+	});
+
+	searchInput?.addEventListener('input', (event) => {
+		renderPostList(event.target.value);
 	});
 </script>
