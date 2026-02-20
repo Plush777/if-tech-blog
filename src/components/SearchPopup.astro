@@ -10,6 +10,7 @@ const posts = (await getCollection('blog'))
 		title: post.data.title,
 		slug: post.slug,
 		description: post.data.description,
+		heroImage: post.data.heroImage,
 	}));
 ---
 
@@ -50,6 +51,9 @@ const posts = (await getCollection('blog'))
 		link.className = 'search-popup-link';
 		link.href = `/posts/${post.slug}`;
 
+		const textArea = document.createElement('div');
+		textArea.className = 'search-popup-text-area';
+
 		const title = document.createElement('strong');
 		title.className = 'search-popup-title';
 		title.textContent = post.title;
@@ -58,9 +62,24 @@ const posts = (await getCollection('blog'))
 		description.className = 'search-popup-description';
 		description.textContent = post.description;
 
-		link.append(title, description);
-		item.append(link);
+		textArea.append(title, description);
+		link.append(textArea);
 
+		const thumbnail = document.createElement('img');
+		thumbnail.className = 'search-popup-thumbnail';
+		thumbnail.src = post.heroImage || '/og.png';
+		thumbnail.alt = `${post.title} 썸네일`;
+		thumbnail.loading = 'lazy';
+		thumbnail.decoding = 'async';
+		thumbnail.width = 84;
+		thumbnail.height = 84;
+		thumbnail.onerror = () => {
+			thumbnail.src = '/og.png';
+		};
+
+		link.append(thumbnail);
+
+		item.append(link);
 		return item;
 	};
 
