@@ -305,17 +305,8 @@
 
 .search-popup-link {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 16px;
-}
-
-.search-popup-text-area {
-	display: flex;
-	flex: 1;
 	flex-direction: column;
 	gap: 8px;
-	min-width: 0;
 }
 
 .search-popup-title {
@@ -329,17 +320,10 @@
 	color: var(--color-gray-500);
 }
 
-
-.search-popup-thumbnail {
-	width: 84px;
-	height: 84px;
-	flex-shrink: 0;
-	object-fit: cover;
-	border-radius: 8px;
-	border: 1px solid var(--color-gray-200);
-}
-
 .search-popup-item-empty {
-	font-size: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
 	color: var(--color-gray-500);
 }
