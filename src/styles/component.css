@@ -296,3 +296,31 @@
 	width: 40px;
 	height: 40px;
 }
+
+.search-popup-item {
+	padding: 16px;
+	border: 1px solid var(--color-gray-200);
+	border-radius: 8px;
+}
+
+.search-popup-link {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.search-popup-title {
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--color-black);
+}
+
+.search-popup-description {
+	font-size: 14px;
+	color: var(--color-gray-500);
+}
+
+.search-popup-item-empty {
+	font-size: 15px;
+	color: var(--color-gray-500);
+}
