@@ -166,3 +166,15 @@
 	color: var(--fff);
 	text-align: left;
 }
+
+.footer-has-logo-text-box {
+	display: flex;
+	flex-direction: column;
+	row-gap: 16px;
+
+	p {
+		font-size: 16px;
+		word-break: keep-all;
+		color: #a1a1a1;
+	}
+}

@@ -8,7 +8,10 @@ const textColor = 'text-gray-800';
 <footer id="footer">
 	<div class="flex flex-col gap-y-[60px] w-full max-w-[var(--mxw-pc)] m-[0_auto] p-[0_10px]">
 		<div class="footer-has-logo-area">
-			<img src="/icons/logo-if-white.svg" width="66" height="52" alt="이프커뮤니티" />
+			<div class="footer-has-logo-text-box">
+				<img src="/icons/logo-if-white.svg" width="66" height="52" alt="이프커뮤니티" />
+				<p>Innovation for Tomorrow, Design for Community</p>
+			</div>
 
 			<ul class="footer-menu-list">
 				{
@@ -51,10 +54,6 @@ const textColor = 'text-gray-800';
 						);
 					})
 				}
-
-				<!-- <li class="footer-menu-item item-04">
-				<Link href="/rss.xml" className=`text-base  ${textColor} max-[500px]:text-sm`>RSS</Link>
-			</li> -->
 			</ul>
 
 			<p class="footer-copy">©ifcommunity. All Rights Reserved.</p>
