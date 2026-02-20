@@ -94,6 +94,14 @@ const posts = (await getCollection('blog'))
 		searchList.append(emptyItem);
 	};
 
+
+	const resetSearch = () => {
+		if (searchInput) {
+			searchInput.value = '';
+		}
+		renderEmptyMessage('검색어를 입력하면 결과가 표시됩니다.');
+	};
+
 	const renderPostList = (query) => {
 		const normalizedQuery = query.trim().toLowerCase();
 
@@ -128,6 +136,11 @@ const posts = (await getCollection('blog'))
 
 	btnClose?.addEventListener('click', () => {
 		searchPopup.classList.remove('active');
+		resetSearch();
+	});
+
+	searchInput?.addEventListener('input', (event) => {
+		renderPostList(event.target.value);
 	});
 
 	searchInput?.addEventListener('input', (event) => {
