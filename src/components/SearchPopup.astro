@@ -10,7 +10,6 @@ const posts = (await getCollection('blog'))
 		title: post.data.title,
 		slug: post.slug,
 		description: post.data.description,
-		heroImage: post.data.heroImage,
 	}));
 ---
 
@@ -18,7 +17,7 @@ const posts = (await getCollection('blog'))
 	<div class="search-popup-inner">
 		<header class="search-popup-header">
 			<LogoWrapper type="search-popup" />
-			<button type="button" class="btn-only-icon search-popup-close text-gray-500">
+			<button type="button" class="btn-only-icon search-popup-close text-gray-400">
 				<PopupClose />
 				<span class="sr-only">검색 팝업 닫기</span>
 			</button>
@@ -51,9 +50,6 @@ const posts = (await getCollection('blog'))
 		link.className = 'search-popup-link';
 		link.href = `/posts/${post.slug}`;
 
-		const textArea = document.createElement('div');
-		textArea.className = 'search-popup-text-area';
-
 		const title = document.createElement('strong');
 		title.className = 'search-popup-title';
 		title.textContent = post.title;
@@ -62,22 +58,9 @@ const posts = (await getCollection('blog'))
 		description.className = 'search-popup-description';
 		description.textContent = post.description;
 
-		textArea.append(title, description);
-		link.append(textArea);
-
-		if (post.heroImage) {
-			const thumbnail = document.createElement('img');
-			thumbnail.className = 'search-popup-thumbnail';
-			thumbnail.src = post.heroImage;
-			thumbnail.alt = `${post.title} 썸네일`;
-			thumbnail.loading = 'lazy';
-			thumbnail.decoding = 'async';
-			thumbnail.width = 84;
-			thumbnail.height = 84;
-			link.append(thumbnail);
-		}
-
+		link.append(title, description);
 		item.append(link);
+
 		return item;
 	};
 
