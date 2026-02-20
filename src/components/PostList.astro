@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import PostListSection from './PostListSection.astro';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) =>  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<PostListSection data={posts}>
+	<h3 class="categoryTitle">전체</h3>
+</PostListSection>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			.container p {
+				color: red;
+			}
+
+			.container button {
+				color: blue;
+			}
+
+			.container a {
+				color: green;
+			}
+
+			.list .list-item {
+				color: pink;
+			}
+
+			.list .list-item .list-item-list .list-item-list-item {
+				color: orange;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<p>Hello World</p>
+			<button>Click me</button>
+			<a href="#">Link</a>
+
+			<ul class="list">
+				<li class="list-item">Item 1</li>
+				<li class="list-item">Item 2</li>
+				<li class="list-item">
+					<span>Item 3</span>
+
+					<ul class="list-item-list">
+						<li class="list-item-list-item">Item 3-1</li>
+						<li class="list-item-list-item">Item 3-2</li>
+						<li class="list-item-list-item">Item 3-3</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

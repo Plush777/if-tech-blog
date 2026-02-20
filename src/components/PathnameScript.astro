@@ -1,0 +1,10 @@
+<script defer is:inline>
+	const body = document.body;
+	const pathname = location.pathname;
+
+	if (pathname.includes('posts')) {
+		body.classList.add('postPage');
+	} else {
+		body.classList.add('blogPage');
+	}
+</script>

@@ -1,0 +1,33 @@
+:root {
+	--primary1: #e52d42;
+
+	--bg1: #f8f9fa;
+	--black: 15, 18, 25;
+
+	--ddd: #ddd;
+	--c333: #333;
+	--c666: #666;
+	--fff: #fff;
+
+	--c000-a1: rgba(0, 0, 0, 0.1);
+
+	--h1: 3rem;
+	--h2: 2rem;
+	--h3: 1.5rem;
+	--h4: 1.25rem;
+
+	--header-height: 60px;
+	--hero-height: 450px;
+
+	--mxw-pc: 1440px;
+	--mxw-mobile: 768px;
+
+	--post-height: 47.787%;
+
+	--bdrs-top12: 12px 12px 0 0;
+	--toc-width: 250px;
+
+	--side-padding: 0 20px;
+
+	--transition1: 0.3s ease-in-out;
+}

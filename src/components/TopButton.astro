@@ -1,0 +1,29 @@
+---
+
+---
+
+<div class="main-button-area">
+	<button type="button" class="main-button btn-top">
+		<span class="sr-only">위로 올라가기</span>
+	</button>
+</div>
+
+<script is:inline>
+	//@ts-nocheck
+	const btnTop = document.querySelector('.main-button-area');
+
+	window.addEventListener('scroll', () => {
+		if (window.scrollY > 100) {
+			btnTop.classList.add('active');
+		} else {
+			btnTop.classList.remove('active');
+		}
+	});
+
+	btnTop?.addEventListener('click', () => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth'
+		});
+	});
+</script>

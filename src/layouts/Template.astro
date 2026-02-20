@@ -1,0 +1,54 @@
+---
+import TopButton from '@/components/TopButton.astro';
+import BaseHead from '@/components/BaseHead.astro';
+import Wrapper from '@/layouts/Wrapper.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import PathnameScript from '@/components/PathnameScript.astro';
+import { SITE } from '@/consts';
+import SearchPopup from '@/components/SearchPopup.astro';
+
+const { title, description } = Astro.props;
+const conditionalTitle = title ? `${title} | ${SITE.title}` : SITE.title;
+
+const baseHeadProps = {
+	title: conditionalTitle,
+	description
+};
+---
+
+<html lang="ko">
+	<head>
+		<!-- <script
+			type="text/javascript"
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=G-PHHG0RB0HE"></script>
+		<script type="text/javascript">
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+			gtag('config', 'G-PHHG0RB0HE');
+		</script> -->
+
+		<BaseHead {...baseHeadProps} />
+	</head>
+	<body>
+		<noscript>
+			<a href="https://support.google.com/adsense/answer/12654?hl=ko" target="_blank"
+				>자바스크립트가 활성화 되어있지 않은 상태입니다.</a
+			>
+		</noscript>
+		<PathnameScript />
+
+		<Wrapper>
+			<Header />
+			<slot />
+			<TopButton />
+			<Footer />
+		</Wrapper>
+
+		<SearchPopup />
+	</body>
+</html>

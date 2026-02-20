@@ -1,0 +1,76 @@
+---
+import OpenInNew from './icons/OpenInNew.astro';
+import Search from './icons/Search.astro';
+import MobileMenu from '@/components/icons/MobileMenu.astro';
+import MobileMenuClose from '@/components/icons/MobileMenuClose.astro';
+import LogoWrapper from './LogoWrapper.astro';
+
+import { HEADER_MENUS } from '../consts';
+
+function buttonColor(index) {
+	if (index === 0) return 'btn-md btn-primary-2';
+	if (index === 1) return 'btn-md btn-gray-2';
+
+	return '';
+}
+---
+
+<header id="header" class="top-0">
+	<nav class="headerMenuArea">
+		<div class="max-md:relative max-md:flex max-md:items-center max-md:w-full max-md:min-h-[60px]">
+			<h1 class="flex items-center h-full">
+				<LogoWrapper />
+			</h1>
+			<button
+				type="button"
+				class="btnMobileMenu absolute top-1/2 -translate-y-1/2 right-0 hidden max-md:block"
+			>
+				<MobileMenu className="size-6 text-black" />
+				<MobileMenuClose className="size-6" />
+				<span class="sr-only">모바일 메뉴</span>
+			</button>
+		</div>
+
+		<div class="headerMenuListArea gap-x-2">
+			<ul class="flex items-center h-full gap-x-2 max-md:flex-col max-md:items-start">
+				{
+					HEADER_MENUS.map((item, index) => {
+						return (
+							<li class="flex items-center h-full max-md:w-full max-md:h-auto">
+								<a class={`${buttonColor(index)}`} href={item.href} target="_blank">
+									<span class="flex items-center">{item.text}</span>
+									<OpenInNew />
+								</a>
+							</li>
+						);
+					})
+				}
+			</ul>
+
+			<button type="button" id="btn-search" class="btn-only-icon h-10 text-gray-800">
+				<Search width={20} height={20} />
+				<span class="sr-only">아티클검색</span>
+			</button>
+		</div>
+	</nav>
+</header>
+
+<script is:inline>
+	const btnMobileMenu = document.querySelector('.btnMobileMenu');
+
+	btnMobileMenu.addEventListener('click', () => {
+		const header = document.querySelector('#header');
+		const svgMobileMenu = document.getElementById('svgMobileMenu');
+		const svgMobileMenuClose = document.getElementById('svgMobileMenuClose');
+
+		header.classList.toggle('active');
+
+		if (header.classList.contains('active')) {
+			svgMobileMenu.style.display = 'none';
+			svgMobileMenuClose.style.display = 'block';
+		} else {
+			svgMobileMenu.style.display = 'block';
+			svgMobileMenuClose.style.display = 'none';
+		}
+	});
+</script>

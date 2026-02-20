@@ -1,0 +1,12 @@
+---
+import Template from "./Template.astro";
+import MainTemplate from "./MainTemplate.astro";
+
+const { title } = Astro.props;
+---
+
+<Template {title}>
+    <MainTemplate>
+        <slot/>
+    </MainTemplate>
+</Template>

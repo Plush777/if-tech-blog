@@ -1,0 +1,11 @@
+---
+import PostListSection from './PostListSection.astro';
+
+const { decodeCategoryLastUrl, myCategory, categoryCountStore } = Astro.props;
+---
+<PostListSection data={myCategory} sectionName="categoryFilterSection">
+    <div class="categoryArea">
+        <h3 class="categoryTitle">{decodeCategoryLastUrl}&nbsp;관련 글</h3>
+        <span class="categoryCount">{`총 ${categoryCountStore}개의 포스트가 있어요.`}</span>
+    </div>
+</PostListSection>

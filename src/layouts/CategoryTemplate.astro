@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import LayoutTemplate from './LayoutTemplate.astro';
+import CategoryPostList from "../components/CategoryPostList.astro";
+import countCategory  from "../utils/countCategory";
+
+/* category [...slug] 에서 post를 props로 받아서 써도 되지만,
+객체는 map으로 못돌리기 때문에 (PostListSection.astro에서) 그냥 getCollection으로 배열 받아와서 filter로 처리함. */
+const posts = await getCollection('blog');
+
+const { slug } = Astro.params; 
+const categoryData = posts.map(item => item.data.category);
+const myCategory = posts.filter((post) => post.data.category === slug);
+
+let categoryCountStore;
+const categoryCountData = countCategory(categoryData);
+const categoryCountDataFilter = Object.entries(categoryCountData).filter(([key,value]) => key === slug);
+// console.log(categoryCountDataFilter);
+categoryCountDataFilter.forEach(([key,value]) => (categoryCountStore = value));
+
+// console.log(categoryCountStore);
+
+let myCategoryUrl;
+
+const pathname = Astro.url.pathname;
+// 받아온 pathname을 분해
+const pathSegments = pathname.split('/');
+const categoryLastUrl = pathSegments[pathSegments.length - 1];
+
+/*
+    마지막 pathname에 / (공백값) 이 있으면 마지막 공백값을 지우고,
+    myCategoryUrl에 저장.
+
+    아니라면 그냥 categoryLastUrl 값으로 저장.
+
+    => 배포 환경에서 /category/카테고리/ 이런식으로 끝나는 경우가 있어서 이렇게 처리함.
+*/
+if (categoryLastUrl === '') {
+    pathSegments.pop();
+    myCategoryUrl = pathSegments[pathSegments.length - 1];
+} else {
+    myCategoryUrl = categoryLastUrl;
+}
+
+const decodeCategoryLastUrl = decodeURIComponent(myCategoryUrl);
+---
+<LayoutTemplate title={`${decodeCategoryLastUrl} 관련글`}>
+    <CategoryPostList {myCategory} {decodeCategoryLastUrl} {categoryCountStore}>
+        <slot/>
+    </CategoryPostList>
+</LayoutTemplate>

@@ -1,0 +1,24 @@
+<div class="notfoundContainer">
+    <h1 class="notfoundNumber">404</h1>
+    <p class="notfoundDescription">요청하신 페이지를 찾을 수 없습니다.</p>
+    <a class="notfoundLink" href="/">돌아가기</a>
+</div>
+
+<style lang="scss">
+    .notfound{
+        &Container{display: flex; flex-direction: column; align-items: center; justify-content: center; 
+        text-align: center; height: 100vh; padding: 0 10px;}
+        &Number{font-size: 7.5rem; letter-spacing: 5px; margin: 0; font-weight: 800;}
+        &Description{font-size: 1.125rem; margin: 0; color: #666; word-break: keep-all;}
+        &Link{display: flex; align-items: center; justify-content: center; font-size: 0.875rem; width: 85px; 
+        height: 38px; border-radius: 6px; margin-top: 20px;
+        color: #fff; font-weight: 500; background-color: #333; text-decoration: none;}
+    }
+
+    @media screen and (max-width: 375px) {
+        .notfound{
+            &Number{font-size: 5.625rem; letter-spacing: 5px; margin: 0; font-weight: 800;}
+            &Description{font-size: 1rem; margin: 0; color: #666;}
+        }
+    }
+</style>

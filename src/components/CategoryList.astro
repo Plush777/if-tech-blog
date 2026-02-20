@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const postArray = posts.filter((arr, index) => {
+	return (
+		posts.findIndex((obj) => {
+			return obj.data.category === arr.data.category;
+		}) === index
+	);
+});
+---
+
+<section class="categorySection">
+	<div class="categoryArea">
+		<h3 class="categoryTitle">카테고리</h3>
+		<ul class="categoryList">
+			{
+				postArray.map((item, index) => (
+					<li class="categoryItem">
+						<a
+							href={`/category/${item.data.category}`}
+							class="categoryLink"
+							id={`category${index + 1}`}
+						>
+							{item.data.category}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

@@ -1,0 +1,48 @@
+---
+import ArticleContainer from './ArticleContainer.astro';
+import Hero from './Hero.astro';
+import FormattedDate from './FormattedDate.astro';
+import PostWarning from './PostWarning.astro';
+import PostReference from './PostReference.astro';
+import PostThumbnail from './PostThumbnail.astro';
+import Image from './Image.astro';
+
+const { title, pubDate, updatedDate, heroImage, category, headings, ref, isWarning } = Astro.props;
+---
+
+<ArticleContainer {headings}>
+	<Hero slot="hero">
+		{
+			heroImage ? (
+				<Image
+					className="absolute top-0 left-0 h-full z-[-1] select-none"
+					width="1903"
+					height="400"
+					src={heroImage}
+					alt={`${title} 글 썸네일`}
+				/>
+			) : (
+				<PostThumbnail name="false" />
+			)
+		}
+		<span class="articleCategory" slot="category">{category}</span>
+		<h2 class="articleTitle" slot="title">{title}</h2>
+		<div class="articleDate" slot="date">
+			<FormattedDate date={pubDate} />
+		</div>
+	</Hero>
+	{isWarning && <PostWarning {title} slot="bq" />}
+
+	<!-- md파일 slot -->
+	<slot />
+	<!-- // -->
+	{ref && <PostReference {ref} slot="ref" />}
+
+	{
+		updatedDate && (
+			<div class="articleUpdated" slot="updated">
+				마지막 업데이트 : <FormattedDate date={updatedDate} />
+			</div>
+		)
+	}
+</ArticleContainer>

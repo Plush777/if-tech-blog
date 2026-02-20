@@ -1,0 +1,25 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Notfound from "../components/Notfound.astro";
+
+const notfoundProps = {
+    title: "404 Not Found",
+    robots: "noindex, nofollow",
+    description: "",
+    ogImage: "",
+    url: "",
+    twitterCard: ""
+}
+---
+<html lang="ko"> 
+	<head>
+		<BaseHead {...notfoundProps}/>
+	</head>
+	<body>
+		<Notfound />
+	</body>
+</html>
+
+<style>
+    body{user-select: none;}
+</style>

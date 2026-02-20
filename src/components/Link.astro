@@ -1,0 +1,11 @@
+---
+const { href, className, linkType } = Astro.props;
+
+const { pathname } = Astro.url;
+
+const isActive = linkType === 'menuActive' && pathname === href ? 'active' : '';
+const target = linkType === 'menuActive' ? '_self' : '_blank';
+---
+<a href={href} class={`${className} ${isActive}`} data-link-type={linkType} target={target}>
+    <slot/>
+</a>

@@ -1,0 +1,8 @@
+.postPage .mainInner {
+	padding: 60px 0;
+	max-width: none;
+}
+
+.postPage .heroImgInner .heroImgBackground {
+	padding-top: 0;
+}

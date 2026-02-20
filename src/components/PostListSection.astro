@@ -1,0 +1,45 @@
+---
+import FormattedDate from './FormattedDate.astro';
+import PostThumbnail from './PostThumbnail.astro';
+import Image from './Image.astro';
+
+const { sectionName, data } = Astro.props;
+---
+
+<section class={sectionName}>
+	<slot />
+	<ul class="myPostList">
+		{
+			data.map((post) => (
+				<li class="myPostItem">
+					<a href={`/posts/${post.slug}/`} class="myPostLink">
+						<div class="myPostTopBox">
+							{post.data.heroImage ? (
+								<Image
+									className="absolute top-0 left-0 h-full"
+									width="768"
+									height="400"
+									src={post.data.heroImage}
+									alt={`${post.data.title} 글 썸네일`}
+									type="thumbnail"
+								/>
+							) : (
+								<PostThumbnail name="true" />
+							)}
+						</div>
+
+						<div class="myPostBottom">
+							<div class="myPostBottomInner">
+								<h4 class="myPostTitle">{post.data.title}</h4>
+								<p class="myPostDescription">{post.data.description}</p>
+							</div>
+							<p class="myPostDate">
+								<FormattedDate date={post.data.pubDate} />
+							</p>
+						</div>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</section>

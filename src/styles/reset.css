@@ -1,0 +1,61 @@
+html {
+	-webkit-text-size-adjust: 100%;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	scrollbar-width: thin;
+}
+
+body,
+html {
+	font-family: 'Pretendard Variable';
+}
+
+img {
+	-webkit-user-drag: none;
+	-khtml-user-drag: none;
+	-moz-user-drag: none;
+	-o-user-drag: none;
+	user-select: none;
+	border: none;
+	display: block;
+	width: 100%;
+	object-fit: cover;
+}
+
+button:not(.defaultButtons button):not(.articleContainer dialog button):not(.btnTop):not(
+		[class*='btn-']
+	) {
+	border: 0;
+	background-color: transparent;
+	cursor: pointer;
+	padding: 0;
+	margin: 0;
+	font-family: inherit;
+}
+
+::selection {
+	color: var(--fff);
+	background-color: var(--primary1);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-weight: bold;
+}
+
+button,
+summary {
+	cursor: pointer !important;
+}
+
+*:focus-visible {
+	outline: 2px solid var(--primary1);
+}
+
+i,
+address {
+	font-style: normal;
+}

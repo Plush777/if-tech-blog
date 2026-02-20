@@ -1,0 +1,14 @@
+---
+import Article from "../components/Article.astro";
+import Comments from "../components/Comments.astro";
+import PostShare from "../components/PostShare.astro";
+import LayoutTemplate from "./LayoutTemplate.astro";
+
+const { title, pubDate, updatedDate, heroImage, category, backgroundColor, headings, ref, isWarning } = Astro.props;
+---
+<LayoutTemplate {title}>
+    <Article {title} {pubDate} {updatedDate} {heroImage} {category} {backgroundColor} {headings} {ref} {isWarning}>
+        <slot/>
+    </Article>
+    <Comments/>
+</LayoutTemplate>

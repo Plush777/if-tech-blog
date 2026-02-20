@@ -1,0 +1,134 @@
+.blogPage {
+	background-color: var(--bg1);
+}
+
+.blogPage .myPostList {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 24px;
+}
+
+.blogPage .myPostItem {
+	border-radius: 12px;
+	transition: var(--transition1);
+}
+
+.blogPage .myPostBottom {
+	padding: 16px;
+	border: 1px solid var(--c000-a1);
+	border-top: 0;
+	border-radius: 0 0 12px 12px;
+	background-color: var(--fff);
+}
+
+.blogPage .myPostBottomInner {
+	display: flex;
+	flex-direction: column;
+	row-gap: 10px;
+}
+
+.blogPage .myPostLink {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	border-radius: var(--bdrs-top12);
+	overflow: hidden;
+}
+
+.blogPage .myPostTopBox {
+	position: relative;
+	border: 1px solid var(--c000-a1);
+	padding-top: var(--post-height);
+	border-radius: var(--bdrs-top12);
+	background-color: var(--fff);
+	transition: var(--transition1);
+}
+
+.blogPage .myPostTitle {
+	font-size: 1.75rem;
+	color: rgb(var(--black));
+	line-height: 1;
+	transition: var(--transition1);
+}
+
+.blogPage .myPostDate {
+	font-size: 0.875rem;
+	margin-top: 20px;
+	color: rgb(96, 115, 159);
+}
+
+.blogPage .myPostDescription {
+	height: 64px;
+	max-height: 64px;
+	font-size: 1rem;
+	color: var(--c333);
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.5;
+	word-break: break-word;
+	word-wrap: break-word;
+}
+
+.blogPage .categoryArea {
+	display: flex;
+	flex-direction: column;
+}
+
+.blogPage .categoryList {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-flow: row wrap;
+	margin-top: 5px;
+}
+
+.blogPage .categoryItem {
+	display: flex;
+	align-items: center;
+	height: 34px;
+	outline: 1px solid var(--c000-a1);
+	border-radius: 16px;
+	background-color: var(--fff);
+}
+
+.blogPage .categoryTitle {
+	font-size: 1.25rem;
+	margin-bottom: 10px;
+}
+
+.blogPage .categoryLink {
+	padding: 0 10px;
+	display: flex;
+	align-items: center;
+	height: 100%;
+	font-size: 1rem;
+	font-weight: 500;
+	color: var(--c333);
+}
+
+.blogPage .categoryFilterSection .categoryArea {
+	margin-bottom: 20px;
+}
+
+.blogPage .categorySection .categoryArea {
+	margin-bottom: 40px;
+	text-indent: 2.5px;
+}
+
+.blogPage .categoryCount {
+	font-size: 1rem;
+	color: var(--c666);
+}
+
+.blogPage
+	:where(article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section) {
+	display: block;
+}
+
+.blogPage img {
+	user-select: none;
+	pointer-events: none;
+}

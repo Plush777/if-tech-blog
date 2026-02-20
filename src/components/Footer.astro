@@ -1,0 +1,63 @@
+---
+import Link from './Link.astro';
+import { COMPANY_INFO, COMPANY_MENUS } from '../consts';
+
+const textColor = 'text-gray-800';
+---
+
+<footer id="footer">
+	<div class="flex flex-col gap-y-[60px] w-full max-w-[var(--mxw-pc)] m-[0_auto] p-[0_10px]">
+		<div class="footer-has-logo-area">
+			<img src="/icons/logo-if-white.svg" width="66" height="52" alt="이프커뮤니티" />
+
+			<ul class="footer-menu-list">
+				{
+					COMPANY_MENUS.map((item, index) => {
+						return (
+							<li class={`footer-has-logo-menu-item`}>
+								<a
+									href={item.content.href}
+									target={item.content.target == 'blank' ? '_blank' : '_self'}
+									class="footer-has-logo-menu-link"
+								>
+									<span class="footer-has-logo-menu-title">{item.content.title}</span>
+								</a>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</div>
+
+		<div class="footer-info-wrapper">
+			<ul class="footer-info-list">
+				{
+					COMPANY_INFO.map((item, index) => {
+						return (
+							<li class={`footer-menu-item item-0${index + 1}`}>
+								<a
+									href={item.content.href}
+									target={item.content.target == 'blank' ? '_blank' : '_self'}
+									class="footer-menu-link"
+								>
+									<span class="footer-info-title">{item.content.title}</span>
+									{item.id === 2 ? (
+										<address class="footer-info-text">{item.content.desc}</address>
+									) : (
+										<span class="footer-info-text">{item.content.desc}</span>
+									)}
+								</a>
+							</li>
+						);
+					})
+				}
+
+				<!-- <li class="footer-menu-item item-04">
+				<Link href="/rss.xml" className=`text-base  ${textColor} max-[500px]:text-sm`>RSS</Link>
+			</li> -->
+			</ul>
+
+			<p class="footer-copy">©ifcommunity. All Rights Reserved.</p>
+		</div>
+	</div>
+</footer>

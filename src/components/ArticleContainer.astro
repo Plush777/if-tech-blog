@@ -1,0 +1,22 @@
+---
+import TOC from "./TOC.astro";
+
+const { className = '', headings } = Astro.props;
+---
+
+<article class={`article max-[1300px]:m-[60px_auto] ${className}`}>
+    <slot name="hero"/>
+
+    <div class="articleContainer">
+        { Astro.url.pathname.includes('posts') && headings.length > 0 ? <TOC {headings}/> : null }
+        <div class="articleInner">
+            <slot name="bq"/>
+            <!-- 작성한 md파일 들어갈 자리 -->
+            <slot />
+            <!-- // -->
+            <slot name="ref"/>
+            <slot name="share"/>
+            <slot name="updated"/>
+        </div>
+    </div>
+</article>

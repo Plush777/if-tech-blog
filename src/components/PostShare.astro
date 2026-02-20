@@ -1,0 +1,22 @@
+---
+
+---
+
+<div class="shareArea">
+	<button type="button" class="btn-md btn-gray-3" id="cr">
+		<span>아티클 공유하기</span>
+	</button>
+</div>
+
+<script>
+	// @ts-nocheck
+	const cr = document.getElementById('cr');
+
+	const url = window.location.href;
+	const articleTitle = document.querySelector('.articleTitle').textContent;
+
+	cr.addEventListener('click', () => {
+		navigator.clipboard.writeText(url);
+		alert('링크가 복사되었습니다.');
+	});
+</script>

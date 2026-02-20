@@ -1,0 +1,228 @@
+.articleContainer .resultArea button,
+.articleContainer .defaultButtons button {
+	appearance: auto; /* 플랫폼에 따라 기본 버튼 스타일 */
+	-webkit-writing-mode: horizontal-tb !important;
+	text-rendering: auto !important;
+	color: buttontext !important; /* 시스템 버튼 텍스트 색상 */
+	letter-spacing: normal !important;
+	word-spacing: normal !important;
+	line-height: normal !important;
+	text-transform: none !important;
+	text-indent: 0px !important;
+	text-shadow: none !important;
+	display: inline-block !important;
+	text-align: center !important;
+	align-items: flex-start !important;
+	background-color: buttonface !important; /* 시스템 버튼 배경색 */
+	box-sizing: border-box !important;
+	margin: 0em !important;
+	padding-block: 1px !important;
+	padding-inline: 6px !important;
+	border-width: 2px !important;
+	border-style: outset !important;
+	border-color: buttonborder !important;
+	border-image: initial !important;
+}
+
+.articleContainer figcaption {
+	text-align: center;
+	font-size: 14px;
+	color: var(--c666);
+}
+
+.articleContainer img {
+	max-width: 100%;
+	margin: 0 auto;
+	border-radius: 12px;
+	object-fit: contain;
+	width: auto;
+}
+
+.articleContainer .bq {
+	font-size: 1rem;
+	color: var(--c333);
+	border-left: 0;
+	line-height: 1.7;
+	word-break: keep-all;
+	border-radius: 16px;
+	padding: 24px;
+	background-color: var(--bg1);
+}
+
+.articleContainer .bq p {
+	margin: 0;
+	font-size: 1rem;
+}
+
+.articleContainer h1 {
+	font-size: var(--h1);
+}
+
+.articleContainer h2 {
+	font-size: var(--h2);
+}
+
+.articleContainer h3 {
+	font-size: var(--h3);
+}
+
+.articleContainer h4 {
+	font-size: var(--h4);
+}
+
+.articleContainer :where(h1, h2, h3, h4) {
+	margin-top: 40px;
+	margin-bottom: 16px;
+	color: rgb(var(--black));
+	line-height: 1.2;
+}
+
+.articleContainer .astro-code {
+	padding: 20px;
+	margin: 15px 0;
+}
+
+.articleContainer ol li {
+	list-style-type: decimal;
+}
+
+.articleContainer li {
+	line-height: 34px;
+	list-style: disc;
+	margin-bottom: 16px;
+}
+
+.articleContainer p {
+	margin: 24px 0px 8px;
+	letter-spacing: 0em;
+	line-height: 1.6;
+	font-size: 1.125rem;
+}
+
+.articleContainer code {
+	padding: 2px 5px;
+	background-color: rgb(229, 233, 240);
+	border-radius: 2px;
+}
+
+.articleContainer pre {
+	border-radius: 8px;
+}
+
+.articleContainer pre > code {
+	all: unset;
+}
+
+.articleContainer blockquote {
+	border-left: 4px solid var(--primary1);
+	padding: 0 0 0 20px;
+	font-size: var(--h4);
+	margin: 0;
+}
+
+.articleContainer table {
+	width: 100%;
+}
+
+.articleContainer table th:not([align]) {
+	text-align: left;
+}
+
+.articleContainer table th,
+.articleContainer table td {
+	line-height: 34px;
+}
+
+.articleContainer ul,
+.articleContainer ol {
+	padding-left: 20px;
+}
+
+.articleContainer .tocInner li {
+	list-style: none;
+	margin-bottom: 8px;
+}
+
+.articleContainer .tocInner ul,
+.articleContainer .tocInner ol {
+	padding-left: 0;
+}
+
+.articleVideo {
+	max-width: 100%;
+	width: 100%;
+	height: 100%;
+	border-radius: 8px;
+	background-color: #ddd;
+}
+
+.mdImageContainer {
+	display: flex;
+	align-items: center;
+	overflow-x: auto;
+	gap: 8px;
+}
+
+.mdImage {
+	width: 100%;
+	height: 100%;
+}
+
+.mdImage-h-500 {
+	height: 500px;
+}
+
+.mdImageContainer + img {
+	margin-top: 40px;
+}
+
+.defaultButtons {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.resultFigure {
+	margin: 0;
+}
+
+.resultFigure .resultFigureImage {
+	margin: 0;
+	width: 100%;
+}
+
+.resultFigcaption {
+	text-align: center;
+	margin-top: 10px;
+}
+
+.resultArea {
+	user-select: none;
+	margin-top: 20px;
+}
+
+.resultArea .resultPictureImage {
+	margin: 0;
+}
+
+.resultIframe {
+	border: 1px solid var(--ddd);
+	border-radius: 8px;
+}
+
+.resultArea dialog {
+	max-width: none;
+	max-height: none;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 20px;
+	border-radius: 8px;
+	width: 100%;
+	max-width: 375px;
+}
+
+.articleDesc {
+	color: var(--color-white);
+}

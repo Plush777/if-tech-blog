@@ -1,0 +1,67 @@
+---
+/* pages > posts > [...slug].astro에서 가져온 headings */
+const { headings } = Astro.props;
+---
+
+<aside id="toc" class="sticky top-[95px] z-[100] max-[1300px]:hidden" aria-label="목차">
+	<div class="tocInner">
+		<ul class="flex flex-col">
+			{
+				headings?.map((h) => (
+					<li class={`!leading-[18px] mb-4 text-sm tocDepth${h.depth}`}>
+						<a class="tocLink" href={`#${h.slug}`} title={h.text}>
+							{h.text}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</aside>
+
+<script>
+	// @ts-nocheck
+	// https://stackoverflow.com/questions/55632954/ignore-all-errors-in-a-typescript-file
+	const articleInner = document.querySelector('.articleInner');
+	const headings = articleInner.querySelectorAll('h2, h3, h4');
+
+	headings.forEach((heading) => heading.classList.add('heading'));
+
+	const tocInner = document.querySelector('.tocInner');
+	const tocItems = document.querySelectorAll('.tocLink');
+	const tags = document.querySelectorAll('.heading');
+
+	tocItems.forEach((item, index) => (item.dataset.index = index));
+	tags.forEach((tag, index) => (tag.dataset.index = index));
+
+	tocInner?.addEventListener('click', (e) => {
+		if (e.target.matches('.tocLink')) {
+			e.preventDefault();
+			const index = e.target.dataset.index;
+			tags[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+		}
+	});
+
+	let selectedIndex = 0;
+
+	const observerCallback = (entries) => {
+		entries.forEach((entry) => {
+			if (entry.isIntersecting) {
+				tocItems[selectedIndex]?.classList.remove('active');
+				selectedIndex = entry.target.dataset.index;
+				tocItems[selectedIndex]?.classList.add('active');
+			} else if (entry.boundingClientRect.y > 100) {
+				tocItems[selectedIndex]?.classList.remove('active');
+				selectedIndex = Number(entry.target.dataset.index) - 1;
+				tocItems[selectedIndex]?.classList.add('active');
+			}
+		});
+	};
+
+	const observer = new IntersectionObserver(observerCallback, {
+		threshold: 1,
+		rootMargin: '-60px 0px 0px 0px'
+	});
+
+	tags.forEach((tag) => observer.observe(tag));
+</script>

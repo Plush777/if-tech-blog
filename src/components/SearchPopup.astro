@@ -1,0 +1,42 @@
+---
+import LogoWrapper from './LogoWrapper.astro';
+import PopupClose from './icons/PopupClose.astro';
+import Input from './Input.astro';
+
+const {} = Astro.props;
+---
+
+<div id="search-popup" class="search-popup">
+	<div class="search-popup-inner">
+		<header class="search-popup-header">
+			<LogoWrapper type="search-popup" />
+			<button type="button" class="btn-only-icon search-popup-close text-gray-500">
+				<PopupClose />
+				<span class="sr-only">검색 팝업 닫기</span>
+			</button>
+		</header>
+
+		<div class="search-popup-content">
+			<div class="search-popup-input-area">
+				<Input placeholder="아티클 제목을 검색해보세요." />
+			</div>
+			<ul class="search-popup-list">
+				<li class="search-popup-item"></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<script is:inline>
+	const btnSearch = document.getElementById('btn-search');
+	const searchPopup = document.getElementById('search-popup');
+	const btnClose = document.querySelector('.search-popup-close');
+
+	btnSearch.addEventListener('click', () => {
+		searchPopup.classList.add('active');
+	});
+
+	btnClose.addEventListener('click', () => {
+		searchPopup.classList.remove('active');
+	});
+</script>

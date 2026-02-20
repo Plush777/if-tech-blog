@@ -1,0 +1,23 @@
+---
+const { ref } = Astro.props;
+---
+
+<div class="ref-root mt-[100px]">
+	<div class="p-[20px] border border-[#ddd] rounded-[6px] bg-[#f8f9fa]">
+		<h3 class="!m-0 !leading-normal" id="reference">참고문헌</h3>
+
+		<ul class="m-0 mt-[10px] ps-5 flex flex-col gap-[5px]">
+			{
+				ref.map((ref) => {
+					return (
+						<li>
+							<a class="text-[#333] font-medium break-all" title={ref} href={ref} target="_blank">
+								{ref}
+							</a>
+						</li>
+					);
+				})
+			}
+		</ul>
+	</div>
+</div>
