@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 function isAbsoluteOrExternalPath(value = '') {
 	return /^(?:[a-z]+:|\/|#)/i.test(value);
 }
@@ -44,4 +46,18 @@ export function resolvePostFilePath({ src, pubDate, category, type = 'assets' })
 	}
 
 	return `${basePath}/${type}/${normalizeRelativePath(src)}`;
+}
+
+export function hasPostAssetFile({ src, pubDate, category, type = 'assets' }) {
+	if (!src || isAbsoluteOrExternalPath(src)) {
+		return false;
+	}
+
+	const resolvedPath = resolvePostFilePath({ src, pubDate, category, type });
+	if (!resolvedPath || !resolvedPath.startsWith('/')) {
+		return false;
+	}
+
+	const absolutePath = path.join(process.cwd(), 'public', resolvedPath.slice(1));
+	return fs.existsSync(absolutePath);
 }
