@@ -50,13 +50,26 @@ async function ensurePostDirectories({ pubDate, category }) {
 	return targetRoot;
 }
 
-function isCategoryScopedPost(filePath) {
-	const relativePath = path.relative(BLOG_DIR, filePath);
-	return relativePath.split(path.sep).length >= 2;
+function normalizePathForMatch(filePath) {
+	return filePath.replaceAll('\\', '/');
+}
+
+function findMatchedMarkdownFiles(markdownFiles, input) {
+	const normalizedInput = normalizePathForMatch(input.trim());
+	const basename = path.basename(normalizedInput);
+
+	return markdownFiles.filter((filePath) => {
+		const relativePath = normalizePathForMatch(path.relative(BLOG_DIR, filePath));
+		return relativePath === normalizedInput || path.basename(filePath) === basename;
+	});
 }
 
 async function run() {
+	const inputPathOrName = process.argv[2];
 	const markdownFiles = await getMarkdownFiles(BLOG_DIR);
+	const targetMarkdownFiles = inputPathOrName
+		? findMatchedMarkdownFiles(markdownFiles, inputPathOrName)
+		: markdownFiles;
 	let createdCount = 0;
 
 	if (!markdownFiles.length) {
@@ -64,12 +77,12 @@ async function run() {
 		return;
 	}
 
-	for (const filePath of markdownFiles) {
-		if (!isCategoryScopedPost(filePath)) {
-			console.warn(`Skipping (category folder required): ${path.relative(process.cwd(), filePath)}`);
-			continue;
-		}
+	if (inputPathOrName && !targetMarkdownFiles.length) {
+		console.warn(`No matching markdown file found for: ${inputPathOrName}`);
+		return;
+	}
 
+	for (const filePath of targetMarkdownFiles) {
 		const markdown = await fs.readFile(filePath, 'utf-8');
 		const frontmatter = getFrontmatter(markdown);
 
