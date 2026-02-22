@@ -1,8 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const BLOG_DIR = path.resolve('src/content/blog');
-const POST_DIR = path.resolve('public/post');
+const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
+const PROJECT_ROOT = path.resolve(SCRIPT_DIR, '..');
+const BLOG_DIR = path.join(PROJECT_ROOT, 'src/content/blog');
+const POST_DIR = path.join(PROJECT_ROOT, 'public/post');
 
 function stripQuotes(value = '') {
 	return value.trim().replace(/^['"]|['"]$/g, '');
@@ -50,13 +53,26 @@ async function ensurePostDirectories({ pubDate, category }) {
 	return targetRoot;
 }
 
-function isCategoryScopedPost(filePath) {
-	const relativePath = path.relative(BLOG_DIR, filePath);
-	return relativePath.split(path.sep).length >= 2;
+function normalizePathForMatch(filePath) {
+	return filePath.replaceAll('\\', '/');
+}
+
+function findMatchedMarkdownFiles(markdownFiles, input) {
+	const normalizedInput = normalizePathForMatch(input.trim());
+	const basename = path.basename(normalizedInput);
+
+	return markdownFiles.filter((filePath) => {
+		const relativePath = normalizePathForMatch(path.relative(BLOG_DIR, filePath));
+		return relativePath === normalizedInput || path.basename(filePath) === basename;
+	});
 }
 
 async function run() {
+	const inputPathOrName = process.argv[2];
 	const markdownFiles = await getMarkdownFiles(BLOG_DIR);
+	const targetMarkdownFiles = inputPathOrName
+		? findMatchedMarkdownFiles(markdownFiles, inputPathOrName)
+		: markdownFiles;
 	let createdCount = 0;
 
 	if (!markdownFiles.length) {
@@ -64,12 +80,12 @@ async function run() {
 		return;
 	}
 
-	for (const filePath of markdownFiles) {
-		if (!isCategoryScopedPost(filePath)) {
-			console.warn(`Skipping (category folder required): ${path.relative(process.cwd(), filePath)}`);
-			continue;
-		}
+	if (inputPathOrName && !targetMarkdownFiles.length) {
+		console.warn(`No matching markdown file found for: ${inputPathOrName}`);
+		return;
+	}
 
+	for (const filePath of targetMarkdownFiles) {
 		const markdown = await fs.readFile(filePath, 'utf-8');
 		const frontmatter = getFrontmatter(markdown);
 
