@@ -43,9 +43,12 @@ function getResolvedHeroImage(post) {
 								<h4 class="myPostTitle">{post.data.title}</h4>
 								<p class="myPostDescription">{post.data.description}</p>
 							</div>
-							<p class="myPostDate">
-								<FormattedDate date={post.data.pubDate} />
-							</p>
+							<div class="myPostMeta">
+								{post.data.author && <span class="myPostAuthor">by {post.data.author}</span>}
+								<p class="myPostDate">
+									<FormattedDate date={post.data.pubDate} />
+								</p>
+							</div>
 						</div>
 					</a>
 				</li>
