@@ -6,8 +6,10 @@ import PostWarning from './PostWarning.astro';
 import PostReference from './PostReference.astro';
 import PostThumbnail from './PostThumbnail.astro';
 import Image from './Image.astro';
+import { resolvePostFilePath } from '../utils/postAssetPath.js';
 
 const { title, pubDate, updatedDate, heroImage, category, headings, ref, isWarning } = Astro.props;
+const resolvedHeroImage = resolvePostFilePath({ src: heroImage, pubDate, category, type: 'assets' });
 ---
 
 <ArticleContainer {headings}>
@@ -18,7 +20,7 @@ const { title, pubDate, updatedDate, heroImage, category, headings, ref, isWarni
 					className="absolute top-0 left-0 h-full z-[-1] select-none"
 					width="1903"
 					height="400"
-					src={heroImage}
+					src={resolvedHeroImage}
 					alt={`${title} 글 썸네일`}
 				/>
 			) : (
