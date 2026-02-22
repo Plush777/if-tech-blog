@@ -2,8 +2,18 @@
 import FormattedDate from './FormattedDate.astro';
 import PostThumbnail from './PostThumbnail.astro';
 import Image from './Image.astro';
+import { resolvePostFilePath } from '../utils/postAssetPath.js';
 
 const { sectionName, data } = Astro.props;
+
+function getResolvedHeroImage(post) {
+	return resolvePostFilePath({
+		src: post.data.heroImage,
+		pubDate: post.data.pubDate,
+		category: post.data.category,
+		type: 'assets'
+	});
+}
 ---
 
 <section class={sectionName}>
@@ -19,7 +29,7 @@ const { sectionName, data } = Astro.props;
 									className="absolute top-0 left-0 h-full"
 									width="768"
 									height="400"
-									src={post.data.heroImage}
+									src={getResolvedHeroImage(post)}
 									alt={`${post.data.title} 글 썸네일`}
 									type="thumbnail"
 								/>
