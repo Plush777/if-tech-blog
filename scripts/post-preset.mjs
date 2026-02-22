@@ -48,8 +48,9 @@ async function ensurePostDirectories({ pubDate, category }) {
 	const dateFolder = `${month}-${day}`;
 	const targetRoot = path.join(POST_DIR, year, category, dateFolder);
 
-	await fs.mkdir(path.join(targetRoot, 'assets'), { recursive: true });
-	await fs.mkdir(path.join(targetRoot, 'example'), { recursive: true });
+	await fs.mkdir(path.join(targetRoot, 'assets', 'images'), { recursive: true });
+	await fs.mkdir(path.join(targetRoot, 'assets', 'videos'), { recursive: true });
+	await fs.mkdir(path.join(targetRoot, 'example', 'html'), { recursive: true });
 
 	return targetRoot;
 }
