@@ -12,7 +12,8 @@ function stripQuotes(value = '') {
 }
 
 function getFrontmatter(markdown) {
-	const match = markdown.match(/^---\n([\s\S]*?)\n---/);
+	const normalizedMarkdown = markdown.replace(/^\uFEFF/, '');
+	const match = normalizedMarkdown.match(/^---\r?\n([\s\S]*?)\r?\n---/);
 	return match ? match[1] : null;
 }
 
