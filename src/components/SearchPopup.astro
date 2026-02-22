@@ -37,7 +37,7 @@ const posts = (await getCollection('blog'))
 </div>
 
 <script is:inline>
-	const btnSearch = document.querySelector('.btn-search');
+	const btnSearchList = document.querySelectorAll('.btn-search');
 	const searchPopup = document.getElementById('search-popup');
 	const btnClose = document.querySelector('.search-popup-close');
 	const searchInput = document.querySelector('.search-popup-input-area .input');
@@ -132,10 +132,12 @@ const posts = (await getCollection('blog'))
 		});
 	};
 
-	btnSearch?.addEventListener('click', () => {
-		document.body.style.overflow = 'hidden';
-		searchPopup.classList.add('active');
-		searchInput?.focus();
+	btnSearchList.forEach((btnSearch) => {
+		btnSearch.addEventListener('click', () => {
+			document.body.style.overflow = 'hidden';
+			searchPopup.classList.add('active');
+			searchInput?.focus();
+		});
 	});
 
 	btnClose?.addEventListener('click', () => {
