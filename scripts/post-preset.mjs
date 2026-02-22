@@ -1,8 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const BLOG_DIR = path.resolve('src/content/blog');
-const POST_DIR = path.resolve('public/post');
+const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
+const PROJECT_ROOT = path.resolve(SCRIPT_DIR, '..');
+const BLOG_DIR = path.join(PROJECT_ROOT, 'src/content/blog');
+const POST_DIR = path.join(PROJECT_ROOT, 'public/post');
 
 function stripQuotes(value = '') {
 	return value.trim().replace(/^['"]|['"]$/g, '');
