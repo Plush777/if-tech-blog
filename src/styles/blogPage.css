@@ -4,7 +4,7 @@
 
 .blogPage .myPostList {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(342px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(342px, 1fr));
 	gap: 24px;
 }
 
@@ -46,7 +46,7 @@
 }
 
 .blogPage .myPostTitle {
-	font-size: 24px;
+	font-size: 20px;
 	color: rgb(var(--black));
 	line-height: 1;
 	transition: var(--transition1);
