@@ -89,7 +89,19 @@
 .articleContainer li {
 	line-height: 34px;
 	list-style: disc;
-	margin-bottom: 16px;
+
+	p {
+		margin: 0;
+	}
+}
+
+.articleContainer video {
+	border-radius: 12px;
+}
+
+.articleContainer video,
+.articleContainer img {
+	border: 1px solid var(--ddd);
 }
 
 .articleContainer p {
@@ -135,6 +147,7 @@
 
 .articleContainer ul,
 .articleContainer ol {
+	margin: 24px 0;
 	padding-left: 20px;
 }
 
@@ -146,6 +159,10 @@
 .articleContainer .tocInner ul,
 .articleContainer .tocInner ol {
 	padding-left: 0;
+}
+
+.articleContainer hr {
+	border-top-color: var(--ddd);
 }
 
 .articleVideo {

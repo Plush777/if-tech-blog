@@ -87,6 +87,14 @@
 	transform: translateY(-50%);
 }
 
+#toc {
+	.tocInner {
+		ul {
+			margin: 0;
+		}
+	}
+}
+
 .tocInner {
 	position: absolute;
 	left: 100%;
