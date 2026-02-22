@@ -1,10 +1,18 @@
 ---
 import FormattedDate from './FormattedDate.astro';
-import PostThumbnail from './PostThumbnail.astro';
 import Image from './Image.astro';
-import { resolvePostFilePath } from '../utils/postAssetPath.js';
+import { hasPostAssetFile, resolvePostFilePath } from '../utils/postAssetPath.js';
 
 const { sectionName, data } = Astro.props;
+
+function hasValidHeroImage(post) {
+	return hasPostAssetFile({
+		src: post.data.heroImage,
+		pubDate: post.data.pubDate,
+		category: post.data.category,
+		type: 'assets'
+	});
+}
 
 function getResolvedHeroImage(post) {
 	return resolvePostFilePath({
@@ -20,36 +28,41 @@ function getResolvedHeroImage(post) {
 	<slot />
 	<ul class="myPostList">
 		{
-			data.map((post) => (
-				<li class="myPostItem">
-					<a href={`/posts/${post.slug}/`} class="myPostLink">
-						<div class="myPostTopBox">
-							{post.data.heroImage ? (
-								<Image
-									className="absolute top-0 left-0 h-full"
-									width="768"
-									height="400"
-									src={getResolvedHeroImage(post)}
-									alt={`${post.data.title} 글 썸네일`}
-									type="thumbnail"
-								/>
-							) : (
-								<PostThumbnail name="true" />
-							)}
-						</div>
+			data.map((post) => {
+				const hasHeroImage = hasValidHeroImage(post);
 
-						<div class="myPostBottom">
-							<div class="myPostBottomInner">
-								<h4 class="myPostTitle">{post.data.title}</h4>
-								<p class="myPostDescription">{post.data.description}</p>
+				return (
+					<li class="myPostItem">
+						<a href={`/posts/${post.slug}/`} class="myPostLink">
+							{hasHeroImage && (
+								<div class="myPostTopBox">
+									<Image
+										className="absolute top-0 left-0 h-full"
+										width="768"
+										height="400"
+										src={getResolvedHeroImage(post)}
+										alt={`${post.data.title} 글 썸네일`}
+										type="thumbnail"
+									/>
+								</div>
+							)}
+
+							<div class:list={['myPostBottom', !hasHeroImage && 'myPostBottomNoThumb']}>
+								<div class="myPostBottomInner">
+									<h4 class="myPostTitle">{post.data.title}</h4>
+									<p class="myPostDescription">{post.data.description}</p>
+								</div>
+								<div class="myPostMeta">
+									{post.data.author && <span class="myPostAuthor">by {post.data.author}</span>}
+									<p class="myPostDate">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+								</div>
 							</div>
-							<p class="myPostDate">
-								<FormattedDate date={post.data.pubDate} />
-							</p>
-						</div>
-					</a>
-				</li>
-			))
+						</a>
+					</li>
+				);
+			})
 		}
 	</ul>
 </section>

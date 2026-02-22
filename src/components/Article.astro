@@ -4,18 +4,21 @@ import Hero from './Hero.astro';
 import FormattedDate from './FormattedDate.astro';
 import PostWarning from './PostWarning.astro';
 import PostReference from './PostReference.astro';
-import PostThumbnail from './PostThumbnail.astro';
 import Image from './Image.astro';
-import { resolvePostFilePath } from '../utils/postAssetPath.js';
+import { hasPostAssetFile, resolvePostFilePath } from '../utils/postAssetPath.js';
 
-const { title, pubDate, updatedDate, heroImage, category, headings, ref, isWarning } = Astro.props;
-const resolvedHeroImage = resolvePostFilePath({ src: heroImage, pubDate, category, type: 'assets' });
+const { title, author, pubDate, updatedDate, heroImage, category, headings, ref, isWarning } =
+	Astro.props;
+const hasHeroImage = hasPostAssetFile({ src: heroImage, pubDate, category, type: 'assets' });
+const resolvedHeroImage = hasHeroImage
+	? resolvePostFilePath({ src: heroImage, pubDate, category, type: 'assets' })
+	: null;
 ---
 
 <ArticleContainer {headings}>
-	<Hero slot="hero">
+	<Hero slot="hero" hasHeroImage={hasHeroImage}>
 		{
-			heroImage ? (
+			hasHeroImage && (
 				<Image
 					className="absolute top-0 left-0 h-full z-[-1] select-none"
 					width="1903"
@@ -23,12 +26,17 @@ const resolvedHeroImage = resolvePostFilePath({ src: heroImage, pubDate, categor
 					src={resolvedHeroImage}
 					alt={`${title} 글 썸네일`}
 				/>
-			) : (
-				<PostThumbnail name="false" />
 			)
 		}
 		<span class="articleCategory" slot="category">{category}</span>
 		<h2 class="articleTitle" slot="title">{title}</h2>
+		{
+			author && (
+				<span class="articleAuthor" slot="author">
+					by {author}
+				</span>
+			)
+		}
 		<div class="articleDate" slot="date">
 			<FormattedDate date={pubDate} />
 		</div>
