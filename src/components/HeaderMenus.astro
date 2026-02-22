@@ -1,0 +1,28 @@
+---
+import OpenInNew from './icons/OpenInNew.astro';
+import { HEADER_MENUS } from '../consts';
+
+function buttonColor(index) {
+	if (index === 0) return 'btn-md btn-primary-2';
+	if (index === 1) return 'btn-md btn-gray-2';
+
+	return '';
+}
+---
+
+<div class=`headerMenuListArea gap-x-2`>
+	<ul class="flex items-center h-full gap-x-2 max-md:w-full">
+		{
+			HEADER_MENUS.map((item, index) => {
+				return (
+					<li class="flex items-center h-full max-md:w-full max-md:h-auto">
+						<a class={`${buttonColor(index)} flex-1`} href={item.href} target="_blank">
+							<span class="flex items-center">{item.text}</span>
+							<OpenInNew />
+						</a>
+					</li>
+				);
+			})
+		}
+	</ul>
+</div>

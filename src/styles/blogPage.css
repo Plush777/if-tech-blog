@@ -4,11 +4,12 @@
 
 .blogPage .myPostList {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(auto-fit, minmax(342px, 1fr));
 	gap: 24px;
 }
 
 .blogPage .myPostItem {
+	height: 400px;
 	border-radius: 12px;
 	transition: var(--transition1);
 }
@@ -36,19 +37,24 @@
 }
 
 .blogPage .myPostTopBox {
+	height: 100%;
 	position: relative;
 	border: 1px solid var(--c000-a1);
-	padding-top: var(--post-height);
 	border-radius: var(--bdrs-top12);
 	background-color: var(--fff);
 	transition: var(--transition1);
 }
 
 .blogPage .myPostTitle {
-	font-size: 1.75rem;
+	font-size: 24px;
 	color: rgb(var(--black));
 	line-height: 1;
 	transition: var(--transition1);
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .blogPage .myPostDate {
@@ -68,7 +74,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	line-height: 1.5;
-	word-break: break-word;
+	word-break: keep-all;
 	word-wrap: break-word;
 }
 
@@ -131,4 +137,22 @@
 .blogPage img {
 	user-select: none;
 	pointer-events: none;
+}
+
+@media (max-width: 1480px) {
+	.blogPage .myPostList {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 1024px) {
+	.blogPage .myPostList {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 768px) {
+	.blogPage .myPostList {
+		grid-template-columns: 1fr;
+	}
 }

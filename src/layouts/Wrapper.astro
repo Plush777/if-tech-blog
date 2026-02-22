@@ -2,6 +2,6 @@
 const { className } = Astro.props;
 ---
 
-<div id="wrap" class={`max-[320px]:min-w-[320px] ${className ? className : ''}`}>
-    <slot/>
+<div id="wrap" class={`min-w-[360px] ${className ? className : ''}`}>
+	<slot />
 </div>

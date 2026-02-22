@@ -4,6 +4,8 @@
 }
 
 #header:not(.heading) {
+	position: relative;
+	transition: 0.3s ease-in-out;
 	display: flex;
 	align-items: center;
 	position: fixed;
@@ -14,14 +16,17 @@
 	z-index: 9999;
 	backdrop-filter: blur(8px);
 	padding: var(--side-padding);
+
+	&.active {
+		background-color: var(--fff);
+	}
 }
 
 #header:not(.heading) .headerMenuArea {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	height: 100%;
 	width: 100%;
+	column-gap: 8px;
 	max-width: var(--mxw-pc);
 	margin: 0 auto;
 }
@@ -46,7 +51,7 @@
 	justify-content: center;
 	background-color: #121212;
 	text-align: center;
-	padding-inline: var(--side-padding);
+	padding-inline: 20px;
 	padding-block: 40px;
 
 	img {
@@ -145,6 +150,7 @@
 .footer-has-logo-area {
 	display: flex;
 	justify-content: space-between;
+	column-gap: 20px;
 }
 
 .footer-menu-list {
@@ -173,8 +179,111 @@
 	row-gap: 16px;
 
 	p {
+		display: flex;
+		align-items: center;
 		font-size: 16px;
 		word-break: keep-all;
 		color: #a1a1a1;
+		text-align: left;
+	}
+}
+
+@media (max-width: 1280px) {
+	.footer-inner {
+		flex-direction: column;
+		align-items: flex-start;
+		row-gap: 32px;
+	}
+
+	.footer-info-title {
+		min-width: 76px;
+	}
+
+	.footer-has-logo-text-box {
+		justify-content: flex-start;
+	}
+
+	.footer-menu-list {
+		width: fit-content;
+	}
+}
+
+@media (max-width: 1024px) {
+	.footer-has-logo-area {
+		flex-direction: column;
+		row-gap: 60px;
+	}
+
+	.footer-info-list {
+		flex-direction: column;
+		align-items: flex-start;
+		row-gap: 8px;
+	}
+
+	.footer-menu-item {
+		&::after {
+			display: none;
+		}
+
+		&.max-1280 {
+			line-height: normal;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	#header {
+		&.active {
+			.headerMenuListArea {
+				z-index: 10;
+				opacity: 1;
+			}
+		}
+	}
+
+	#header .headerMenuArea {
+		flex-direction: column;
+		overflow: hidden;
+	}
+
+	#header .headerMenuLink {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		padding: 18px 20px 18px 0;
+	}
+
+	.headerMenuListArea {
+		max-height: 500px;
+		overflow-y: auto;
+		flex-direction: column;
+		row-gap: 12px;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		top: 60px;
+		width: 100%;
+		height: auto;
+		z-index: -1;
+		opacity: 0;
+		transition: 0.3s ease-in-out;
+		padding-block: 24px;
+		padding-inline: 20px;
+		background-color: var(--color-white);
+	}
+}
+
+@media (max-width: 475px) {
+	.footer-has-logo-area {
+		row-gap: 32px;
+	}
+
+	.footer-has-logo-menu-item {
+		width: auto;
+	}
+
+	.footer-menu-list {
+		grid-template-columns: 1fr;
+		row-gap: 12px;
 	}
 }

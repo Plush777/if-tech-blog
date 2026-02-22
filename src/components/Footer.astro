@@ -1,12 +1,11 @@
 ---
-import Link from './Link.astro';
 import { COMPANY_INFO, COMPANY_MENUS } from '../consts';
-
-const textColor = 'text-gray-800';
 ---
 
 <footer id="footer">
-	<div class="flex flex-col gap-y-[60px] w-full max-w-[var(--mxw-pc)] m-[0_auto] p-[0_10px]">
+	<div
+		class="flex flex-col gap-y-[60px] w-full max-w-[var(--mxw-pc)] m-[0_auto] p-[0_10px] max-[475px]:gap-y-8"
+	>
 		<div class="footer-has-logo-area">
 			<div class="footer-has-logo-text-box">
 				<img src="/icons/logo-if-white.svg" width="66" height="52" alt="이프커뮤니티" />
