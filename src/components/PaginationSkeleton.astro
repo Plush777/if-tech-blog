@@ -6,7 +6,7 @@ const pageButtonCount = Math.min(safeTotalPages, 5);
 ---
 
 <div class="paginationSkeleton" data-pagination-skeleton aria-hidden="true">
-	<ul class="myPostList paginationSkeletonList" data-skeleton-post-list>
+	<ul class="paginationSkeletonList" data-skeleton-post-list>
 		{
 			Array.from({ length: safePageSize }).map(() => (
 				<li class="myPostItem paginationSkeletonCard">
@@ -34,6 +34,18 @@ const pageButtonCount = Math.min(safeTotalPages, 5);
 </div>
 
 <style>
+
+	:global(.blogPage .paginationSkeletonList) {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(342px, 1fr));
+		gap: 24px;
+	}
+
+	:global(.blogPage .paginationSkeletonCard) {
+		height: 400px;
+		border-radius: 12px;
+	}
+
 	.paginationSkeletonCard {
 		display: flex;
 		flex-direction: column;
@@ -92,6 +104,25 @@ const pageButtonCount = Math.min(safeTotalPages, 5);
 		background-size: 400% 100%;
 		animation: skeleton-shimmer 1.2s ease-in-out infinite;
 		border-color: transparent;
+	}
+
+
+	@media (max-width: 1480px) {
+		:global(.blogPage .paginationSkeletonList) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (max-width: 1024px) {
+		:global(.blogPage .paginationSkeletonList) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 768px) {
+		:global(.blogPage .paginationSkeletonList) {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	@keyframes skeleton-shimmer {
