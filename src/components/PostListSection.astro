@@ -4,6 +4,7 @@ import Image from './Image.astro';
 import { hasPostAssetFile, resolvePostFilePath } from '../utils/postAssetPath.js';
 
 const { sectionName, data } = Astro.props;
+const pageSize = 8;
 
 function hasValidHeroImage(post) {
 	return hasPostAssetFile({
@@ -24,15 +25,15 @@ function getResolvedHeroImage(post) {
 }
 ---
 
-<section class={sectionName}>
+<section class:list={[sectionName, 'paginatedPostSection']} data-page-size={pageSize}>
 	<slot />
-	<ul class="myPostList">
+	<ul class="myPostList" data-post-list>
 		{
-			data.map((post) => {
+			data.map((post, index) => {
 				const hasHeroImage = hasValidHeroImage(post);
 
 				return (
-					<li class="myPostItem">
+					<li class="myPostItem" data-post-item data-post-index={index} hidden={index >= pageSize}>
 						<a href={`/posts/${post.slug}/`} class="myPostLink">
 							{hasHeroImage && (
 								<div class="myPostTopBox">
@@ -65,4 +66,110 @@ function getResolvedHeroImage(post) {
 			})
 		}
 	</ul>
+
+	<nav class="postPagination" data-pagination aria-label="포스트 페이지네이션">
+		<button type="button" class="paginationButton" data-pagination-first aria-label="첫 페이지로 이동">
+			&lt;&lt;
+		</button>
+		<button type="button" class="paginationButton" data-pagination-prev aria-label="이전 페이지로 이동">
+			&lt;
+		</button>
+		<ul class="paginationList" data-pagination-pages></ul>
+		<button type="button" class="paginationButton" data-pagination-next aria-label="다음 페이지로 이동">
+			&gt;
+		</button>
+		<button type="button" class="paginationButton" data-pagination-last aria-label="마지막 페이지로 이동">
+			&gt;&gt;
+		</button>
+	</nav>
 </section>
+
+<script>
+	const paginatedSections = document.querySelectorAll('.paginatedPostSection');
+
+	paginatedSections.forEach((section) => {
+		const postItems = Array.from(section.querySelectorAll('[data-post-item]'));
+		const pageSize = Number(section.dataset.pageSize) || 8;
+		const totalPages = Math.max(1, Math.ceil(postItems.length / pageSize));
+
+		const pagination = section.querySelector('[data-pagination]');
+		const firstButton = section.querySelector('[data-pagination-first]');
+		const prevButton = section.querySelector('[data-pagination-prev]');
+		const nextButton = section.querySelector('[data-pagination-next]');
+		const lastButton = section.querySelector('[data-pagination-last]');
+		const pagesContainer = section.querySelector('[data-pagination-pages]');
+
+		if (!pagination || !firstButton || !prevButton || !nextButton || !lastButton || !pagesContainer) {
+			return;
+		}
+
+		let currentPage = 1;
+
+		const renderPageButtons = () => {
+			pagesContainer.innerHTML = '';
+
+			for (let page = 1; page <= totalPages; page += 1) {
+				const pageItem = document.createElement('li');
+				const pageButton = document.createElement('button');
+
+				pageButton.type = 'button';
+				pageButton.className = 'paginationButton';
+				pageButton.textContent = String(page);
+				pageButton.dataset.paginationPage = String(page);
+				pageButton.setAttribute('aria-label', `${page}페이지로 이동`);
+
+				pageButton.addEventListener('click', () => {
+					currentPage = page;
+					updatePagination();
+				});
+
+				pageItem.append(pageButton);
+				pagesContainer.append(pageItem);
+			}
+		};
+
+		const updatePagination = () => {
+			const startIndex = (currentPage - 1) * pageSize;
+			const endIndex = startIndex + pageSize;
+
+			postItems.forEach((postItem, index) => {
+				postItem.hidden = index < startIndex || index >= endIndex;
+			});
+
+			const pageButtons = pagesContainer.querySelectorAll('[data-pagination-page]');
+			pageButtons.forEach((button) => {
+				const isCurrentPage = Number(button.dataset.paginationPage) === currentPage;
+				button.classList.toggle('is-active', isCurrentPage);
+				button.setAttribute('aria-current', isCurrentPage ? 'page' : 'false');
+			});
+
+			firstButton.disabled = currentPage === 1;
+			prevButton.disabled = currentPage === 1;
+			nextButton.disabled = currentPage === totalPages;
+			lastButton.disabled = currentPage === totalPages;
+		};
+
+		firstButton.addEventListener('click', () => {
+			currentPage = 1;
+			updatePagination();
+		});
+
+		prevButton.addEventListener('click', () => {
+			currentPage = Math.max(1, currentPage - 1);
+			updatePagination();
+		});
+
+		nextButton.addEventListener('click', () => {
+			currentPage = Math.min(totalPages, currentPage + 1);
+			updatePagination();
+		});
+
+		lastButton.addEventListener('click', () => {
+			currentPage = totalPages;
+			updatePagination();
+		});
+
+		renderPageButtons();
+		updatePagination();
+	});
+</script>
