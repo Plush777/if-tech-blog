@@ -14,37 +14,57 @@
 	word-break: keep-all;
 }
 
+
+.article.articleNoHero .articleContainer {
+	margin-top: calc(125px + var(--header-height));
+}
+
+.postHeader {
+	padding-bottom: 28px;
+	margin-bottom: 28px;
+	border-bottom: 1px solid var(--ddd);
+}
+
 .articleCategory {
+	display: inline-block;
 	font-size: 1rem;
-	color: var(--fff);
+	color: var(--primary1);
+	font-weight: 600;
 }
 
 .articleCategory + .articleTitle {
-	margin-top: 5px;
+	margin-top: 10px;
 }
 
 .articleTitle {
 	font-size: 2.5rem;
-	color: var(--fff);
+	color: var(--c111);
 	margin: 0;
+	line-height: 1.35;
 }
 
-.articleTitle + .articleAuthor {
-	margin-top: 16px;
+.articleMeta {
+	display: flex;
+	align-items: center;
+	column-gap: 8px;
+	margin-top: 18px;
 }
 
 .articleAuthor {
 	font-size: 1rem;
-	color: rgba(255, 255, 255, 0.9);
-}
-
-.articleAuthor + .articleDate {
-	margin-top: 6px;
+	color: var(--c444);
+	font-weight: 500;
 }
 
 .articleDate {
-	color: rgba(255, 255, 255, 0.85);
-	font-size: 1.125rem;
+	color: var(--c444);
+	font-size: 1rem;
+}
+
+.articleAuthor + .articleDate::before {
+	content: '·';
+	display: inline-block;
+	margin-right: 8px;
 }
 
 .articleUpdated {

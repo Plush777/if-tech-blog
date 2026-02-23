@@ -15,10 +15,10 @@ const resolvedHeroImage = hasHeroImage
 	: null;
 ---
 
-<ArticleContainer {headings}>
-	<Hero slot="hero" hasHeroImage={hasHeroImage}>
-		{
-			hasHeroImage && (
+<ArticleContainer {headings} className={!hasHeroImage ? 'articleNoHero' : ''}>
+	{
+		hasHeroImage && (
+			<Hero slot="hero" hasHeroImage={hasHeroImage}>
 				<Image
 					className="absolute top-0 left-0 h-full z-[-1] select-none"
 					width="1903"
@@ -26,21 +26,20 @@ const resolvedHeroImage = hasHeroImage
 					src={resolvedHeroImage}
 					alt={`${title} 글 썸네일`}
 				/>
-			)
-		}
-		<span class="articleCategory" slot="category">{category}</span>
-		<h2 class="articleTitle" slot="title">{title}</h2>
-		{
-			author && (
-				<span class="articleAuthor" slot="author">
-					by {author}
-				</span>
-			)
-		}
-		<div class="articleDate" slot="date">
-			<FormattedDate date={pubDate} />
+			</Hero>
+		)
+	}
+
+	<div class="postHeader" slot="post-header">
+		<span class="articleCategory">{category}</span>
+		<h2 class="articleTitle">{title}</h2>
+		<div class="articleMeta">
+			{author && <span class="articleAuthor">{author}</span>}
+			<div class="articleDate">
+				<FormattedDate date={pubDate} />
+			</div>
 		</div>
-	</Hero>
+	</div>
 	{isWarning && <PostWarning {title} slot="bq" />}
 
 	<!-- md파일 slot -->
