@@ -1,12 +1,6 @@
-<script defer is:inline>
+<script is:inline>
 	const body = document.body;
 	const pathname = location.pathname;
-	const pageParam = Number.parseInt(new URL(location.href).searchParams.get('page') ?? '1', 10);
-	const hasPaginationQuery = !Number.isNaN(pageParam) && pageParam > 1;
-
-	if (hasPaginationQuery) {
-		document.documentElement.classList.add('pagination-pending');
-	}
 
 	if (pathname.includes('posts')) {
 		body.classList.add('postPage');
