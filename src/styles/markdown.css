@@ -143,6 +143,7 @@
 .articleContainer table th:not([align]) {
 	text-align: left;
 }
+/* */
 
 .articleContainer table th,
 .articleContainer table td {
