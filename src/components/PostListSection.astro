@@ -7,10 +7,11 @@ import { hasPostAssetFile, resolvePostFilePath } from '../utils/postAssetPath.js
 const { sectionName, data } = Astro.props;
 const pageSize = 8;
 const totalPages = Math.max(1, Math.ceil(data.length / pageSize));
-const pageParam = Number(Astro.url.searchParams.get('page'));
-const currentPage = Number.isInteger(pageParam)
-	? Math.min(totalPages, Math.max(1, pageParam))
-	: 1;
+const pageParamRaw = Astro.url.searchParams.get('page');
+const pageParam = Number.parseInt(pageParamRaw ?? '1', 10);
+const currentPage = Number.isNaN(pageParam)
+	? 1
+	: Math.min(totalPages, Math.max(1, pageParam));
 const startIndex = (currentPage - 1) * pageSize;
 const pagedData = data.slice(startIndex, startIndex + pageSize);
 
