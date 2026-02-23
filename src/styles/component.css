@@ -2,7 +2,6 @@
 	max-width: var(--mxw-mobile);
 	margin: 0 auto;
 	padding: 20px 0;
-	border-top: 1px solid var(--ddd);
 }
 
 .articleContainer {
@@ -10,13 +9,12 @@
 	width: 100%;
 	max-width: var(--mxw-mobile);
 	padding-bottom: 20px;
-	margin: calc(125px + var(--header-height) + var(--hero-height)) auto 0 auto;
+	margin: calc(var(--header-height) + var(--hero-height)) auto 0 auto;
 	word-break: keep-all;
 }
 
-
 .article.articleNoHero .articleContainer {
-	margin-top: calc(125px + var(--header-height));
+	margin-top: var(--header-height);
 }
 
 .postHeader {
@@ -70,6 +68,12 @@
 .articleUpdated {
 	font-style: italic;
 	color: var(--c333);
+}
+
+.shareArea {
+	border-bottom: 1px solid var(--ddd);
+	padding-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .shareArea button + button {

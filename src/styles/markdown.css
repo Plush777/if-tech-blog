@@ -24,6 +24,10 @@
 	border-image: initial !important;
 }
 
+.articleContainer a {
+	text-decoration: underline;
+}
+
 .articleContainer figcaption {
 	text-align: center;
 	font-size: 14px;
@@ -149,6 +153,10 @@
 .articleContainer ol {
 	margin: 24px 0;
 	padding-left: 20px;
+}
+
+.articleContainer .tocInner a {
+	text-decoration: none;
 }
 
 .articleContainer .tocInner li {
