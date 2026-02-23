@@ -83,3 +83,94 @@ function getResolvedHeroImage(post) {
 
 	<Pagination totalPages={totalPages} currentPage={currentPage} />
 </section>
+
+<style is:global>
+	html.pagination-pending .paginatedPostSection .myPostList,
+	html.pagination-pending .paginatedPostSection [data-pagination] {
+		visibility: hidden;
+	}
+</style>
+
+<script>
+	const isHTMLElement = (element) => element instanceof HTMLElement;
+	const currentUrl = new URL(window.location.href);
+	const currentPathname = currentUrl.pathname;
+	const parsedPage = Number.parseInt(currentUrl.searchParams.get('page') ?? '1', 10);
+
+	const paginatedSections = document.querySelectorAll('.paginatedPostSection');
+
+	const createPageHref = (page) => (page === 1 ? currentPathname : `${currentPathname}?page=${page}`);
+
+	const setControlState = (control, { disabled, href }) => {
+		if (!isHTMLElement(control)) {
+			return;
+		}
+
+		control.href = href;
+		control.classList.toggle('is-disabled', disabled);
+		control.setAttribute('aria-disabled', disabled ? 'true' : 'false');
+
+		if (disabled) {
+			control.setAttribute('tabindex', '-1');
+		} else {
+			control.removeAttribute('tabindex');
+		}
+	};
+
+	paginatedSections.forEach((section) => {
+		if (!isHTMLElement(section)) {
+			return;
+		}
+
+		const postItems = Array.from(section.querySelectorAll('[data-post-item]')).filter(isHTMLElement);
+		const pageSize = Number(section.dataset.pageSize) || 8;
+		const totalPages = Math.max(1, Math.ceil(postItems.length / pageSize));
+		const currentPage = Number.isNaN(parsedPage)
+			? 1
+			: Math.min(totalPages, Math.max(1, parsedPage));
+
+		const startIndex = (currentPage - 1) * pageSize;
+		const endIndex = startIndex + pageSize;
+
+		postItems.forEach((postItem, index) => {
+			postItem.hidden = index < startIndex || index >= endIndex;
+		});
+
+		const pageLinks = Array.from(section.querySelectorAll('[data-page-link]')).filter(isHTMLElement);
+		pageLinks.forEach((pageLink) => {
+			const linkPage = Number.parseInt(pageLink.dataset.page ?? '1', 10);
+			const normalizedLinkPage = Number.isNaN(linkPage)
+				? 1
+				: Math.min(totalPages, Math.max(1, linkPage));
+			const isCurrentPage = normalizedLinkPage === currentPage;
+
+			pageLink.href = createPageHref(normalizedLinkPage);
+			pageLink.classList.toggle('is-active', isCurrentPage);
+			pageLink.setAttribute('aria-current', isCurrentPage ? 'page' : 'false');
+		});
+
+		const firstControl = section.querySelector('[data-pagination-control="first"]');
+		const prevControl = section.querySelector('[data-pagination-control="prev"]');
+		const nextControl = section.querySelector('[data-pagination-control="next"]');
+		const lastControl = section.querySelector('[data-pagination-control="last"]');
+
+		setControlState(firstControl, {
+			disabled: currentPage === 1,
+			href: createPageHref(1)
+		});
+		setControlState(prevControl, {
+			disabled: currentPage === 1,
+			href: createPageHref(Math.max(1, currentPage - 1))
+		});
+		setControlState(nextControl, {
+			disabled: currentPage === totalPages,
+			href: createPageHref(Math.min(totalPages, currentPage + 1))
+		});
+		setControlState(lastControl, {
+			disabled: currentPage === totalPages,
+			href: createPageHref(totalPages)
+		});
+	});
+
+	document.documentElement.classList.remove('pagination-pending');
+</script>
