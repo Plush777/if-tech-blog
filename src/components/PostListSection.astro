@@ -149,15 +149,9 @@ function getResolvedHeroImage(post) {
 			pageLink.setAttribute('aria-current', isCurrentPage ? 'page' : 'false');
 		});
 
-		const firstControl = section.querySelector('[data-pagination-control="first"]');
 		const prevControl = section.querySelector('[data-pagination-control="prev"]');
 		const nextControl = section.querySelector('[data-pagination-control="next"]');
-		const lastControl = section.querySelector('[data-pagination-control="last"]');
 
-		setControlState(firstControl, {
-			disabled: currentPage === 1,
-			href: createPageHref(1)
-		});
 		setControlState(prevControl, {
 			disabled: currentPage === 1,
 			href: createPageHref(Math.max(1, currentPage - 1))
@@ -165,10 +159,6 @@ function getResolvedHeroImage(post) {
 		setControlState(nextControl, {
 			disabled: currentPage === totalPages,
 			href: createPageHref(Math.min(totalPages, currentPage + 1))
-		});
-		setControlState(lastControl, {
-			disabled: currentPage === totalPages,
-			href: createPageHref(totalPages)
 		});
 	});
 
