@@ -10,6 +10,7 @@ const { className = '', headings } = Astro.props;
     <div class="articleContainer">
         { Astro.url.pathname.includes('posts') && headings.length > 0 ? <TOC {headings}/> : null }
         <div class="articleInner">
+            <slot name="post-header"/>
             <slot name="bq"/>
             <!-- 작성한 md파일 들어갈 자리 -->
             <slot />

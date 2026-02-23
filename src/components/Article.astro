@@ -28,19 +28,18 @@ const resolvedHeroImage = hasHeroImage
 				/>
 			)
 		}
-		<span class="articleCategory" slot="category">{category}</span>
-		<h2 class="articleTitle" slot="title">{title}</h2>
-		{
-			author && (
-				<span class="articleAuthor" slot="author">
-					by {author}
-				</span>
-			)
-		}
-		<div class="articleDate" slot="date">
-			<FormattedDate date={pubDate} />
-		</div>
 	</Hero>
+
+	<div class="postHeader" slot="post-header">
+		<span class="articleCategory">{category}</span>
+		<h2 class="articleTitle">{title}</h2>
+		<div class="articleMeta">
+			{author && <span class="articleAuthor">{author}</span>}
+			<div class="articleDate">
+				<FormattedDate date={pubDate} />
+			</div>
+		</div>
+	</div>
 	{isWarning && <PostWarning {title} slot="bq" />}
 
 	<!-- md파일 slot -->
