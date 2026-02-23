@@ -193,6 +193,13 @@
 	cursor: not-allowed;
 }
 
+
+.blogPage .paginationButton.is-disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
 .blogPage .paginationButton.is-active {
 	background-color: #60739f;
 	border-color: #60739f;
