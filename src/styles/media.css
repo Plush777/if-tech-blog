@@ -6,10 +6,6 @@
 	.blogPage .myPostList {
 		row-gap: 60px;
 	}
-
-	.articleContainer {
-		margin: 0 auto;
-	}
 }
 
 @media screen and (max-width: 500px) {
@@ -61,21 +57,11 @@
 		font-size: 2.25rem;
 	}
 
-	.articleAuthor {
-		font-size: 0.875rem;
-	}
-
 	.articleDate {
 		font-size: 1rem;
 	}
 
-	.articleContainer {
-		margin: 35px auto;
-	}
-
-
 	.postHeader {
-		margin: 24px 0;
 		padding-bottom: 22px;
 	}
 

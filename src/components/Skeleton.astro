@@ -9,29 +9,25 @@ const skeletonType = type === 'pagination' ? 'pagination' : 'card';
 {
 	skeletonType === 'card' ? (
 		<ul class="paginationSkeletonList" data-skeleton-post-list>
-			{
-				Array.from({ length: safePageSize }).map(() => (
-					<li class="myPostItem paginationSkeletonCard">
-						<div class="paginationSkeletonThumb" />
-						<div class="paginationSkeletonBody">
-							<div class="paginationSkeletonLine paginationSkeletonLine--title" />
-							<div class="paginationSkeletonLine paginationSkeletonLine--desc" />
-							<div class="paginationSkeletonLine paginationSkeletonLine--descShort" />
-							<div class="paginationSkeletonLine paginationSkeletonLine--meta" />
-						</div>
-					</li>
-				))
-			}
+			{Array.from({ length: safePageSize }).map(() => (
+				<li class="myPostItem paginationSkeletonCard">
+					<div class="paginationSkeletonThumb" />
+					<div class="paginationSkeletonBody">
+						<div class="paginationSkeletonLine paginationSkeletonLine--title" />
+						<div class="paginationSkeletonLine paginationSkeletonLine--desc" />
+						<div class="paginationSkeletonLine paginationSkeletonLine--descShort" />
+						<div class="paginationSkeletonLine paginationSkeletonLine--meta" />
+					</div>
+				</li>
+			))}
 		</ul>
 	) : (
 		<div class="postPagination paginationSkeletonPagination" data-skeleton-pagination>
-			<div class="paginationButton paginationSkeletonButton"></div>
-			{
-				Array.from({ length: pageButtonCount }).map(() => (
-					<div class="paginationButton paginationSkeletonButton" />
-				))
-			}
-			<div class="paginationButton paginationSkeletonButton"></div>
+			<div class="paginationButton paginationSkeletonButton" />
+			{Array.from({ length: pageButtonCount }).map(() => (
+				<div class="paginationButton paginationSkeletonButton" />
+			))}
+			<div class="paginationButton paginationSkeletonButton" />
 		</div>
 	)
 }
@@ -44,7 +40,7 @@ const skeletonType = type === 'pagination' ? 'pagination' : 'card';
 	}
 
 	:global(.blogPage .paginationSkeletonCard) {
-		height: 400px;
+		height: var(--total-card-height);
 		border-radius: 12px;
 	}
 
@@ -57,7 +53,7 @@ const skeletonType = type === 'pagination' ? 'pagination' : 'card';
 	}
 
 	.paginationSkeletonThumb {
-		height: 220px;
+		height: var(--card-top-height);
 		background: linear-gradient(90deg, #eef1f6 25%, #e3e8f1 37%, #eef1f6 63%);
 		background-size: 400% 100%;
 		animation: skeleton-shimmer 1.2s ease-in-out infinite;
@@ -68,6 +64,7 @@ const skeletonType = type === 'pagination' ? 'pagination' : 'card';
 		flex-direction: column;
 		gap: 10px;
 		padding: 16px;
+		height: var(--card-bottom-height);
 	}
 
 	.paginationSkeletonLine {
@@ -114,6 +111,14 @@ const skeletonType = type === 'pagination' ? 'pagination' : 'card';
 		}
 		100% {
 			background-position: 0 0;
+		}
+	}
+
+	@media (max-width: 425px) {
+		:global(.blogPage .paginationSkeletonList) {
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
 		}
 	}
 </style>

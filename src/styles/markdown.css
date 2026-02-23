@@ -26,6 +26,7 @@
 
 .articleContainer a {
 	text-decoration: underline;
+	word-break: break-all;
 }
 
 .articleContainer figcaption {
@@ -40,6 +41,10 @@
 	border-radius: 12px;
 	object-fit: contain;
 	width: auto;
+
+	+ img {
+		margin: 8px auto 0 auto;
+	}
 }
 
 .articleContainer .bq {

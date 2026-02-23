@@ -1,5 +1,13 @@
 @media (hover: hover) {
-	.blogPage .myPostItem:hover {
-		box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.08);
+	.blogPage {
+		.myPostItem:hover {
+			box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.08);
+		}
+
+		.myPostLink:hover {
+			img {
+				transform: scale(1.2);
+			}
+		}
 	}
 }

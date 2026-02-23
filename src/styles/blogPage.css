@@ -9,7 +9,6 @@
 }
 
 .blogPage .myPostItem {
-	height: 400px;
 	border-radius: 12px;
 	transition: var(--transition1);
 }
@@ -17,6 +16,7 @@
 .blogPage .myPostBottom {
 	display: flex;
 	flex-direction: column;
+	height: var(--card-bottom-height);
 	padding: 16px;
 	border: 1px solid var(--c000-a1);
 	border-top: 0;
@@ -25,7 +25,7 @@
 }
 
 .blogPage .myPostBottomNoThumb {
-	height: 100%;
+	height: var(--total-card-height);
 	border-top: 1px solid var(--c000-a1);
 	border-radius: 12px;
 
@@ -42,7 +42,6 @@
 .blogPage .myPostBottomInner {
 	display: flex;
 	flex-direction: column;
-	row-gap: 10px;
 }
 
 .blogPage .myPostLink {
@@ -54,12 +53,23 @@
 }
 
 .blogPage .myPostTopBox {
-	height: 100%;
+	overflow: hidden;
+	height: var(--card-top-height);
 	position: relative;
 	border: 1px solid var(--c000-a1);
 	border-radius: var(--bdrs-top12);
 	background-color: var(--fff);
 	transition: var(--transition1);
+
+	.myPostCategory {
+		position: absolute;
+		top: 16px;
+		left: 16px;
+	}
+
+	img {
+		transition: 0.3s ease;
+	}
 }
 
 .blogPage .myPostTitle {
@@ -76,26 +86,29 @@
 
 .blogPage .myPostMeta {
 	display: flex;
-	flex-direction: column;
-	row-gap: 4px;
-	margin-top: 20px;
+	align-items: center;
+	justify-content: space-between;
+	row-gap: 8px;
 }
 
 .blogPage .myPostAuthor {
-	font-size: 0.8125rem;
-	color: var(--c666);
+	width: fit-content;
+	font-size: 14px;
+	color: var(--color-black);
 }
 
 .blogPage .myPostDate {
-	font-size: 0.875rem;
-	margin-top: 0;
-	color: rgb(96, 115, 159);
+	font-size: 14px;
+	color: var(--color-gray-500);
 }
 
 .blogPage .myPostCategory {
-	font-size: 0.8125rem;
-	margin-top: 2px;
-	color: var(--c666);
+	width: fit-content;
+	font-size: 14px;
+	color: var(--color-white);
+	border-radius: 8px;
+	padding: 0 6px;
+	background-color: var(--primary1);
 }
 
 .blogPage .myPostDescription {
@@ -219,4 +232,12 @@
 .blogPage img {
 	user-select: none;
 	pointer-events: none;
+}
+
+@media (max-width: 425px) {
+	.blogPage .myPostList {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
 }
