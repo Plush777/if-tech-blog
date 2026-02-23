@@ -10,28 +10,19 @@ function getPageHref(page) {
 }
 ---
 
-<nav class="postPagination" data-pagination aria-label="포스트 페이지네이션">
-	{
-		safeCurrentPage === 1 ? (
-			<span class="paginationButton is-disabled" aria-disabled="true">&lt;&lt;</span>
-		) : (
-			<a class="paginationButton" href={getPageHref(1)} aria-label="첫 페이지로 이동">&lt;&lt;</a>
-		)
-	}
+<nav class="postPagination" data-pagination aria-label="포스트 페이지네이션" data-total-pages={safeTotalPages}>
+	<a class="paginationButton" data-pagination-control="first" href={getPageHref(1)} aria-label="첫 페이지로 이동"
+		>&lt;&lt;</a
+	>
 
-	{
-		safeCurrentPage === 1 ? (
-			<span class="paginationButton is-disabled" aria-disabled="true">&lt;</span>
-		) : (
-			<a
-				class="paginationButton"
-				href={getPageHref(safeCurrentPage - 1)}
-				aria-label="이전 페이지로 이동"
-			>
-				&lt;
-			</a>
-		)
-	}
+	<a
+		class="paginationButton"
+		data-pagination-control="prev"
+		href={getPageHref(Math.max(1, safeCurrentPage - 1))}
+		aria-label="이전 페이지로 이동"
+	>
+		&lt;
+	</a>
 
 	<ul class="paginationList" data-pagination-pages>
 		{
@@ -39,6 +30,8 @@ function getPageHref(page) {
 				<li>
 					<a
 						href={getPageHref(page)}
+						data-page-link
+						data-page={page}
 						class:list={['paginationButton', page === safeCurrentPage && 'is-active']}
 						aria-label={`${page}페이지로 이동`}
 						aria-current={page === safeCurrentPage ? 'page' : 'false'}
@@ -50,31 +43,21 @@ function getPageHref(page) {
 		}
 	</ul>
 
-	{
-		safeCurrentPage === safeTotalPages ? (
-			<span class="paginationButton is-disabled" aria-disabled="true">&gt;</span>
-		) : (
-			<a
-				class="paginationButton"
-				href={getPageHref(safeCurrentPage + 1)}
-				aria-label="다음 페이지로 이동"
-			>
-				&gt;
-			</a>
-		)
-	}
+	<a
+		class="paginationButton"
+		data-pagination-control="next"
+		href={getPageHref(Math.min(safeTotalPages, safeCurrentPage + 1))}
+		aria-label="다음 페이지로 이동"
+	>
+		&gt;
+	</a>
 
-	{
-		safeCurrentPage === safeTotalPages ? (
-			<span class="paginationButton is-disabled" aria-disabled="true">&gt;&gt;</span>
-		) : (
-			<a
-				class="paginationButton"
-				href={getPageHref(safeTotalPages)}
-				aria-label="마지막 페이지로 이동"
-			>
-				&gt;&gt;
-			</a>
-		)
-	}
+	<a
+		class="paginationButton"
+		data-pagination-control="last"
+		href={getPageHref(safeTotalPages)}
+		aria-label="마지막 페이지로 이동"
+	>
+		&gt;&gt;
+	</a>
 </nav>
