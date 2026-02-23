@@ -214,21 +214,3 @@
 	user-select: none;
 	pointer-events: none;
 }
-
-@media (max-width: 1480px) {
-	.blogPage .myPostList {
-		grid-template-columns: repeat(3, 1fr);
-	}
-}
-
-@media (max-width: 1024px) {
-	.blogPage .myPostList {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media (max-width: 768px) {
-	.blogPage .myPostList {
-		grid-template-columns: 1fr;
-	}
-}

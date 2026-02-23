@@ -10,12 +10,12 @@ const pageButtonCount = Math.min(safeTotalPages, 5);
 		{
 			Array.from({ length: safePageSize }).map(() => (
 				<li class="myPostItem paginationSkeletonCard">
-					<div class="paginationSkeletonThumb"></div>
+					<div class="paginationSkeletonThumb" />
 					<div class="paginationSkeletonBody">
-						<div class="paginationSkeletonLine paginationSkeletonLine--title"></div>
-						<div class="paginationSkeletonLine paginationSkeletonLine--desc"></div>
-						<div class="paginationSkeletonLine paginationSkeletonLine--descShort"></div>
-						<div class="paginationSkeletonLine paginationSkeletonLine--meta"></div>
+						<div class="paginationSkeletonLine paginationSkeletonLine--title" />
+						<div class="paginationSkeletonLine paginationSkeletonLine--desc" />
+						<div class="paginationSkeletonLine paginationSkeletonLine--descShort" />
+						<div class="paginationSkeletonLine paginationSkeletonLine--meta" />
 					</div>
 				</li>
 			))
@@ -26,7 +26,7 @@ const pageButtonCount = Math.min(safeTotalPages, 5);
 		<div class="paginationButton paginationSkeletonButton"></div>
 		{
 			Array.from({ length: pageButtonCount }).map(() => (
-				<div class="paginationButton paginationSkeletonButton"></div>
+				<div class="paginationButton paginationSkeletonButton" />
 			))
 		}
 		<div class="paginationButton paginationSkeletonButton"></div>
@@ -34,7 +34,6 @@ const pageButtonCount = Math.min(safeTotalPages, 5);
 </div>
 
 <style>
-
 	:global(.blogPage .paginationSkeletonList) {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(342px, 1fr));
@@ -104,25 +103,6 @@ const pageButtonCount = Math.min(safeTotalPages, 5);
 		background-size: 400% 100%;
 		animation: skeleton-shimmer 1.2s ease-in-out infinite;
 		border-color: transparent;
-	}
-
-
-	@media (max-width: 1480px) {
-		:global(.blogPage .paginationSkeletonList) {
-			grid-template-columns: repeat(3, 1fr);
-		}
-	}
-
-	@media (max-width: 1024px) {
-		:global(.blogPage .paginationSkeletonList) {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
-
-	@media (max-width: 768px) {
-		:global(.blogPage .paginationSkeletonList) {
-			grid-template-columns: 1fr;
-		}
 	}
 
 	@keyframes skeleton-shimmer {
