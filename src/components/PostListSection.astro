@@ -10,9 +10,7 @@ const pageSize = 8;
 const totalPages = Math.max(1, Math.ceil(data.length / pageSize));
 const pageParamRaw = Astro.url.searchParams.get('page');
 const pageParam = Number.parseInt(pageParamRaw ?? '1', 10);
-const currentPage = Number.isNaN(pageParam)
-	? 1
-	: Math.min(totalPages, Math.max(1, pageParam));
+const currentPage = Number.isNaN(pageParam) ? 1 : Math.min(totalPages, Math.max(1, pageParam));
 const startIndex = (currentPage - 1) * pageSize;
 
 function hasValidHeroImage(post) {
@@ -34,11 +32,13 @@ function getResolvedHeroImage(post) {
 }
 ---
 
-<script is:inline>document.documentElement.classList.add('pagination-pending');</script>
+<script is:inline>
+	document.documentElement.classList.add('pagination-pending');
+</script>
 
 <section class:list={[sectionName, 'paginatedPostSection']} data-page-size={pageSize}>
-	<PaginationSkeleton pageSize={pageSize} totalPages={totalPages} />
 	<slot />
+	<PaginationSkeleton pageSize={pageSize} totalPages={totalPages} />
 	<ul class="myPostList" data-post-list>
 		{
 			data.map((post, index) => {
@@ -111,7 +111,8 @@ function getResolvedHeroImage(post) {
 
 	const paginatedSections = document.querySelectorAll('.paginatedPostSection');
 
-	const createPageHref = (page) => (page === 1 ? currentPathname : `${currentPathname}?page=${page}`);
+	const createPageHref = (page) =>
+		page === 1 ? currentPathname : `${currentPathname}?page=${page}`;
 
 	const setControlState = (control, { disabled, href }) => {
 		if (!isHTMLElement(control)) {
@@ -134,7 +135,9 @@ function getResolvedHeroImage(post) {
 			return;
 		}
 
-		const postItems = Array.from(section.querySelectorAll('[data-post-item]')).filter(isHTMLElement);
+		const postItems = Array.from(section.querySelectorAll('[data-post-item]')).filter(
+			isHTMLElement
+		);
 		const pageSize = Number(section.dataset.pageSize) || 8;
 		const totalPages = Math.max(1, Math.ceil(postItems.length / pageSize));
 		const currentPage = Number.isNaN(parsedPage)
@@ -148,7 +151,9 @@ function getResolvedHeroImage(post) {
 			postItem.hidden = index < startIndex || index >= endIndex;
 		});
 
-		const pageLinks = Array.from(section.querySelectorAll('[data-page-link]')).filter(isHTMLElement);
+		const pageLinks = Array.from(section.querySelectorAll('[data-page-link]')).filter(
+			isHTMLElement
+		);
 		pageLinks.forEach((pageLink) => {
 			const linkPage = Number.parseInt(pageLink.dataset.page ?? '1', 10);
 			const normalizedLinkPage = Number.isNaN(linkPage)
