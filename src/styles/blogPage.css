@@ -158,6 +158,54 @@
 	color: var(--c666);
 }
 
+.blogPage .postPagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	margin-top: 28px;
+}
+
+.blogPage .paginationList {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.blogPage .paginationButton {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 32px;
+	height: 32px;
+	padding: 0 8px;
+	border: 1px solid var(--c000-a1);
+	border-radius: 8px;
+	background-color: var(--fff);
+	font-size: 0.9375rem;
+	font-weight: 500;
+	color: var(--c333);
+	transition: var(--transition1);
+}
+
+.blogPage .paginationButton:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+
+.blogPage .paginationButton.is-disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+.blogPage .paginationButton.is-active {
+	background-color: #60739f;
+	border-color: #60739f;
+	color: var(--fff);
+}
+
 .blogPage
 	:where(article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section) {
 	display: block;
