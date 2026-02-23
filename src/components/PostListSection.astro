@@ -109,6 +109,7 @@ function getResolvedHeroImage(post) {
 
 <script>
 	const isHTMLElement = (element) => element instanceof HTMLElement;
+	const isHTMLAnchorElement = (element) => element instanceof HTMLAnchorElement;
 	const currentUrl = new URL(window.location.href);
 	const currentPathname = currentUrl.pathname;
 	const parsedPage = Number.parseInt(currentUrl.searchParams.get('page') ?? '1', 10);
@@ -119,7 +120,7 @@ function getResolvedHeroImage(post) {
 		page === 1 ? currentPathname : `${currentPathname}?page=${page}`;
 
 	const setControlState = (control, { disabled, href }) => {
-		if (!isHTMLElement(control)) {
+		if (!isHTMLAnchorElement(control)) {
 			return;
 		}
 
@@ -156,7 +157,7 @@ function getResolvedHeroImage(post) {
 		});
 
 		const pageLinks = Array.from(section.querySelectorAll('[data-page-link]')).filter(
-			isHTMLElement
+			isHTMLAnchorElement
 		);
 		pageLinks.forEach((pageLink) => {
 			const linkPage = Number.parseInt(pageLink.dataset.page ?? '1', 10);
