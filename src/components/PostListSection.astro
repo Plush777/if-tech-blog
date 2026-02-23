@@ -33,7 +33,7 @@ function getResolvedHeroImage(post) {
 				const hasHeroImage = hasValidHeroImage(post);
 
 				return (
-					<li class="myPostItem" data-post-item data-post-index={index}>
+					<li class="myPostItem" data-post-item data-post-index={index} hidden={index >= pageSize}>
 						<a href={`/posts/${post.slug}/`} class="myPostLink">
 							{hasHeroImage && (
 								<div class="myPostTopBox">
