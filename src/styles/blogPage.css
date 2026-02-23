@@ -92,6 +92,12 @@
 	color: rgb(96, 115, 159);
 }
 
+.blogPage .myPostCategory {
+	font-size: 0.8125rem;
+	margin-top: 2px;
+	color: var(--c666);
+}
+
 .blogPage .myPostDescription {
 	height: 64px;
 	max-height: 64px;
