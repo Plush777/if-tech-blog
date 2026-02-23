@@ -34,15 +34,15 @@ function getResolvedHeroImage(post) {
 }
 ---
 
-<section class={sectionName}>
+<section class:list={[sectionName, 'paginatedPostSection']} data-page-size={pageSize}>
 	<slot />
-	<ul class="myPostList">
+	<ul class="myPostList" data-post-list>
 		{
 			pagedData.map((post) => {
 				const hasHeroImage = hasValidHeroImage(post);
 
 				return (
-					<li class="myPostItem">
+					<li class="myPostItem" data-post-item data-post-index={index} hidden={index >= pageSize}>
 						<a href={`/posts/${post.slug}/`} class="myPostLink">
 							{hasHeroImage && (
 								<div class="myPostTopBox">
@@ -78,3 +78,81 @@ function getResolvedHeroImage(post) {
 
 	<Pagination totalPages={totalPages} currentPage={currentPage} />
 </section>
+
+<script>
+	const paginatedSections = document.querySelectorAll('.paginatedPostSection');
+
+	paginatedSections.forEach((section, sectionIndex) => {
+		const postItems = Array.from(section.querySelectorAll('[data-post-item]'));
+		const pageSize = Number(section.dataset.pageSize) || 8;
+		const totalPages = Math.max(1, Math.ceil(postItems.length / pageSize));
+
+		const firstButton = section.querySelector('[data-pagination-first]');
+		const prevButton = section.querySelector('[data-pagination-prev]');
+		const nextButton = section.querySelector('[data-pagination-next]');
+		const lastButton = section.querySelector('[data-pagination-last]');
+		const pagesContainer = section.querySelector('[data-pagination-pages]');
+
+		if (!firstButton || !prevButton || !nextButton || !lastButton || !pagesContainer) {
+			return;
+		}
+
+		const storageKey = `post-pagination:${location.pathname}:${sectionIndex}`;
+		const storedPage = Number(window.sessionStorage.getItem(storageKey));
+		let currentPage = Number.isInteger(storedPage)
+			? Math.min(totalPages, Math.max(1, storedPage))
+			: 1;
+
+		const updatePagination = () => {
+			const startIndex = (currentPage - 1) * pageSize;
+			const endIndex = startIndex + pageSize;
+
+			postItems.forEach((postItem, index) => {
+				postItem.hidden = index < startIndex || index >= endIndex;
+			});
+
+			const pageButtons = pagesContainer.querySelectorAll('[data-pagination-page]');
+			pageButtons.forEach((button) => {
+				const isCurrentPage = Number(button.dataset.paginationPage) === currentPage;
+				button.classList.toggle('is-active', isCurrentPage);
+				button.setAttribute('aria-current', isCurrentPage ? 'page' : 'false');
+			});
+
+			firstButton.disabled = currentPage === 1;
+			prevButton.disabled = currentPage === 1;
+			nextButton.disabled = currentPage === totalPages;
+			lastButton.disabled = currentPage === totalPages;
+
+			window.sessionStorage.setItem(storageKey, String(currentPage));
+		};
+
+		const moveToPage = (page) => {
+			currentPage = Math.min(totalPages, Math.max(1, page));
+			updatePagination();
+		};
+
+		pagesContainer.querySelectorAll('[data-pagination-page]').forEach((button) => {
+			button.addEventListener('click', () => {
+				moveToPage(Number(button.dataset.paginationPage));
+			});
+		});
+
+		firstButton.addEventListener('click', () => {
+			moveToPage(1);
+		});
+
+		prevButton.addEventListener('click', () => {
+			moveToPage(currentPage - 1);
+		});
+
+		nextButton.addEventListener('click', () => {
+			moveToPage(currentPage + 1);
+		});
+
+		lastButton.addEventListener('click', () => {
+			moveToPage(totalPages);
+		});
+
+		updatePagination();
+	});
+</script>
