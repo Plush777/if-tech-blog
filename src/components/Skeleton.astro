@@ -1,37 +1,40 @@
 ---
-const { pageSize = 8, totalPages = 1 } = Astro.props;
+const { pageSize = 8, totalPages = 1, type = 'card' } = Astro.props;
 const safePageSize = Math.max(1, Number(pageSize) || 8);
 const safeTotalPages = Math.max(1, Number(totalPages) || 1);
 const pageButtonCount = Math.min(safeTotalPages, 5);
+const skeletonType = type === 'pagination' ? 'pagination' : 'card';
 ---
 
-<div class="paginationSkeleton" data-pagination-skeleton aria-hidden="true">
-	<ul class="paginationSkeletonList" data-skeleton-post-list>
-		{
-			Array.from({ length: safePageSize }).map(() => (
-				<li class="myPostItem paginationSkeletonCard">
-					<div class="paginationSkeletonThumb" />
-					<div class="paginationSkeletonBody">
-						<div class="paginationSkeletonLine paginationSkeletonLine--title" />
-						<div class="paginationSkeletonLine paginationSkeletonLine--desc" />
-						<div class="paginationSkeletonLine paginationSkeletonLine--descShort" />
-						<div class="paginationSkeletonLine paginationSkeletonLine--meta" />
-					</div>
-				</li>
-			))
-		}
-	</ul>
-
-	<div class="postPagination paginationSkeletonPagination" data-skeleton-pagination>
-		<div class="paginationButton paginationSkeletonButton"></div>
-		{
-			Array.from({ length: pageButtonCount }).map(() => (
-				<div class="paginationButton paginationSkeletonButton" />
-			))
-		}
-		<div class="paginationButton paginationSkeletonButton"></div>
-	</div>
-</div>
+{
+	skeletonType === 'card' ? (
+		<ul class="paginationSkeletonList" data-skeleton-post-list>
+			{
+				Array.from({ length: safePageSize }).map(() => (
+					<li class="myPostItem paginationSkeletonCard">
+						<div class="paginationSkeletonThumb" />
+						<div class="paginationSkeletonBody">
+							<div class="paginationSkeletonLine paginationSkeletonLine--title" />
+							<div class="paginationSkeletonLine paginationSkeletonLine--desc" />
+							<div class="paginationSkeletonLine paginationSkeletonLine--descShort" />
+							<div class="paginationSkeletonLine paginationSkeletonLine--meta" />
+						</div>
+					</li>
+				))
+			}
+		</ul>
+	) : (
+		<div class="postPagination paginationSkeletonPagination" data-skeleton-pagination>
+			<div class="paginationButton paginationSkeletonButton"></div>
+			{
+				Array.from({ length: pageButtonCount }).map(() => (
+					<div class="paginationButton paginationSkeletonButton" />
+				))
+			}
+			<div class="paginationButton paginationSkeletonButton"></div>
+		</div>
+	)
+}
 
 <style>
 	:global(.blogPage .paginationSkeletonList) {
