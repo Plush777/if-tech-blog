@@ -2,6 +2,7 @@
 import FormattedDate from './FormattedDate.astro';
 import Image from './Image.astro';
 import Pagination from './Pagination.astro';
+import PaginationSkeleton from './PaginationSkeleton.astro';
 import { hasPostAssetFile, resolvePostFilePath } from '../utils/postAssetPath.js';
 
 const { sectionName, data } = Astro.props;
@@ -33,7 +34,10 @@ function getResolvedHeroImage(post) {
 }
 ---
 
+<script is:inline>document.documentElement.classList.add('pagination-pending');</script>
+
 <section class:list={[sectionName, 'paginatedPostSection']} data-page-size={pageSize}>
+	<PaginationSkeleton pageSize={pageSize} totalPages={totalPages} />
 	<slot />
 	<ul class="myPostList" data-post-list>
 		{
@@ -87,7 +91,15 @@ function getResolvedHeroImage(post) {
 <style is:global>
 	html.pagination-pending .paginatedPostSection .myPostList,
 	html.pagination-pending .paginatedPostSection [data-pagination] {
-		visibility: hidden;
+		display: none;
+	}
+
+	html .paginatedPostSection [data-pagination-skeleton] {
+		display: none;
+	}
+
+	html.pagination-pending .paginatedPostSection [data-pagination-skeleton] {
+		display: block;
 	}
 </style>
 
