@@ -38,7 +38,7 @@ function getResolvedHeroImage(post) {
 	<slot />
 	<ul class="myPostList" data-post-list>
 		{
-			pagedData.map((post) => {
+			pagedData.map((post, index) => {
 				const hasHeroImage = hasValidHeroImage(post);
 
 				return (
@@ -80,9 +80,16 @@ function getResolvedHeroImage(post) {
 </section>
 
 <script>
+	const isHTMLElement = (element) => element instanceof HTMLElement;
+	const isHTMLButtonElement = (element) => element instanceof HTMLButtonElement;
+
 	const paginatedSections = document.querySelectorAll('.paginatedPostSection');
 
 	paginatedSections.forEach((section, sectionIndex) => {
+		if (!isHTMLElement(section)) {
+			return;
+		}
+
 		const postItems = Array.from(section.querySelectorAll('[data-post-item]'));
 		const pageSize = Number(section.dataset.pageSize) || 8;
 		const totalPages = Math.max(1, Math.ceil(postItems.length / pageSize));
@@ -93,7 +100,13 @@ function getResolvedHeroImage(post) {
 		const lastButton = section.querySelector('[data-pagination-last]');
 		const pagesContainer = section.querySelector('[data-pagination-pages]');
 
-		if (!firstButton || !prevButton || !nextButton || !lastButton || !pagesContainer) {
+		if (
+			!isHTMLButtonElement(firstButton) ||
+			!isHTMLButtonElement(prevButton) ||
+			!isHTMLButtonElement(nextButton) ||
+			!isHTMLButtonElement(lastButton) ||
+			!isHTMLElement(pagesContainer)
+		) {
 			return;
 		}
 
@@ -108,11 +121,19 @@ function getResolvedHeroImage(post) {
 			const endIndex = startIndex + pageSize;
 
 			postItems.forEach((postItem, index) => {
+				if (!isHTMLElement(postItem)) {
+					return;
+				}
+
 				postItem.hidden = index < startIndex || index >= endIndex;
 			});
 
 			const pageButtons = pagesContainer.querySelectorAll('[data-pagination-page]');
 			pageButtons.forEach((button) => {
+				if (!isHTMLElement(button)) {
+					return;
+				}
+
 				const isCurrentPage = Number(button.dataset.paginationPage) === currentPage;
 				button.classList.toggle('is-active', isCurrentPage);
 				button.setAttribute('aria-current', isCurrentPage ? 'page' : 'false');
@@ -132,6 +153,10 @@ function getResolvedHeroImage(post) {
 		};
 
 		pagesContainer.querySelectorAll('[data-pagination-page]').forEach((button) => {
+			if (!isHTMLElement(button)) {
+				return;
+			}
+
 			button.addEventListener('click', () => {
 				moveToPage(Number(button.dataset.paginationPage));
 			});
