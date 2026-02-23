@@ -174,5 +174,15 @@ function getResolvedHeroImage(post) {
 		});
 	});
 
-	document.documentElement.classList.remove('pagination-pending');
+	const removePendingState = () => {
+		window.setTimeout(() => {
+			document.documentElement.classList.remove('pagination-pending');
+		}, 1000);
+	};
+
+	if (document.readyState === 'complete') {
+		removePendingState();
+	} else {
+		window.addEventListener('load', removePendingState, { once: true });
+	}
 </script>

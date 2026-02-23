@@ -6,7 +6,7 @@ const pageButtonCount = Math.min(safeTotalPages, 5);
 ---
 
 <div class="paginationSkeleton" data-pagination-skeleton aria-hidden="true">
-	<ul class="myPostList paginationSkeletonList">
+	<ul class="myPostList paginationSkeletonList" data-skeleton-post-list>
 		{
 			Array.from({ length: safePageSize }).map(() => (
 				<li class="myPostItem paginationSkeletonCard">
@@ -22,7 +22,7 @@ const pageButtonCount = Math.min(safeTotalPages, 5);
 		}
 	</ul>
 
-	<div class="postPagination paginationSkeletonPagination">
+	<div class="postPagination paginationSkeletonPagination" data-skeleton-pagination>
 		<div class="paginationButton paginationSkeletonButton"></div>
 		{
 			Array.from({ length: pageButtonCount }).map(() => (
