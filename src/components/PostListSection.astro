@@ -1,9 +1,18 @@
 ---
 import FormattedDate from './FormattedDate.astro';
 import Image from './Image.astro';
+import Pagination from './Pagination.astro';
 import { hasPostAssetFile, resolvePostFilePath } from '../utils/postAssetPath.js';
 
 const { sectionName, data } = Astro.props;
+const pageSize = 8;
+const totalPages = Math.max(1, Math.ceil(data.length / pageSize));
+const pageParam = Number(Astro.url.searchParams.get('page'));
+const currentPage = Number.isInteger(pageParam)
+	? Math.min(totalPages, Math.max(1, pageParam))
+	: 1;
+const startIndex = (currentPage - 1) * pageSize;
+const pagedData = data.slice(startIndex, startIndex + pageSize);
 
 function hasValidHeroImage(post) {
 	return hasPostAssetFile({
@@ -26,9 +35,9 @@ function getResolvedHeroImage(post) {
 
 <section class={sectionName}>
 	<slot />
-	<ul class="myPostList">
+	<ul class="myPostList" data-post-list>
 		{
-			data.map((post) => {
+			pagedData.map((post) => {
 				const hasHeroImage = hasValidHeroImage(post);
 
 				return (
@@ -65,4 +74,6 @@ function getResolvedHeroImage(post) {
 			})
 		}
 	</ul>
+
+	<Pagination totalPages={totalPages} currentPage={currentPage} />
 </section>
