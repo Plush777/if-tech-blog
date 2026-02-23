@@ -13,7 +13,6 @@ const currentPage = Number.isNaN(pageParam)
 	? 1
 	: Math.min(totalPages, Math.max(1, pageParam));
 const startIndex = (currentPage - 1) * pageSize;
-const pagedData = data.slice(startIndex, startIndex + pageSize);
 
 function hasValidHeroImage(post) {
 	return hasPostAssetFile({
@@ -38,11 +37,17 @@ function getResolvedHeroImage(post) {
 	<slot />
 	<ul class="myPostList" data-post-list>
 		{
-			pagedData.map((post, index) => {
+			data.map((post, index) => {
 				const hasHeroImage = hasValidHeroImage(post);
+				const isVisibleInCurrentPage = index >= startIndex && index < startIndex + pageSize;
 
 				return (
-					<li class="myPostItem" data-post-item data-post-index={index} hidden={index >= pageSize}>
+					<li
+						class="myPostItem"
+						data-post-item
+						data-post-index={index}
+						hidden={!isVisibleInCurrentPage}
+					>
 						<a href={`/posts/${post.slug}/`} class="myPostLink">
 							{hasHeroImage && (
 								<div class="myPostTopBox">
@@ -81,11 +86,10 @@ function getResolvedHeroImage(post) {
 
 <script>
 	const isHTMLElement = (element) => element instanceof HTMLElement;
-	const isHTMLButtonElement = (element) => element instanceof HTMLButtonElement;
 
 	const paginatedSections = document.querySelectorAll('.paginatedPostSection');
 
-	paginatedSections.forEach((section, sectionIndex) => {
+	paginatedSections.forEach((section) => {
 		if (!isHTMLElement(section)) {
 			return;
 		}
@@ -94,27 +98,18 @@ function getResolvedHeroImage(post) {
 		const pageSize = Number(section.dataset.pageSize) || 8;
 		const totalPages = Math.max(1, Math.ceil(postItems.length / pageSize));
 
-		const firstButton = section.querySelector('[data-pagination-first]');
-		const prevButton = section.querySelector('[data-pagination-prev]');
-		const nextButton = section.querySelector('[data-pagination-next]');
-		const lastButton = section.querySelector('[data-pagination-last]');
-		const pagesContainer = section.querySelector('[data-pagination-pages]');
+		const pageLinks = Array.from(
+			section.querySelectorAll('[data-pagination] a.paginationButton[href]')
+		).filter(isHTMLElement);
 
-		if (
-			!isHTMLButtonElement(firstButton) ||
-			!isHTMLButtonElement(prevButton) ||
-			!isHTMLButtonElement(nextButton) ||
-			!isHTMLButtonElement(lastButton) ||
-			!isHTMLElement(pagesContainer)
-		) {
+		if (pageLinks.length === 0) {
 			return;
 		}
 
-		const storageKey = `post-pagination:${location.pathname}:${sectionIndex}`;
-		const storedPage = Number(window.sessionStorage.getItem(storageKey));
-		let currentPage = Number.isInteger(storedPage)
-			? Math.min(totalPages, Math.max(1, storedPage))
-			: 1;
+		const parsedPage = Number.parseInt(new URL(window.location.href).searchParams.get('page') ?? '1', 10);
+		const currentPage = Number.isNaN(parsedPage)
+			? 1
+			: Math.min(totalPages, Math.max(1, parsedPage));
 
 		const updatePagination = () => {
 			const startIndex = (currentPage - 1) * pageSize;
@@ -128,55 +123,20 @@ function getResolvedHeroImage(post) {
 				postItem.hidden = index < startIndex || index >= endIndex;
 			});
 
-			const pageButtons = pagesContainer.querySelectorAll('[data-pagination-page]');
-			pageButtons.forEach((button) => {
-				if (!isHTMLElement(button)) {
-					return;
+			pageLinks.forEach((pageLink) => {
+				const linkUrl = new URL(pageLink.href, window.location.origin);
+				const linkPage = Number.parseInt(linkUrl.searchParams.get('page') ?? '1', 10);
+				const normalizedLinkPage = Number.isNaN(linkPage)
+					? 1
+					: Math.min(totalPages, Math.max(1, linkPage));
+				const isCurrentPage = normalizedLinkPage === currentPage;
+
+				if (pageLink.closest('.paginationList')) {
+					pageLink.classList.toggle('is-active', isCurrentPage);
+					pageLink.setAttribute('aria-current', isCurrentPage ? 'page' : 'false');
 				}
-
-				const isCurrentPage = Number(button.dataset.paginationPage) === currentPage;
-				button.classList.toggle('is-active', isCurrentPage);
-				button.setAttribute('aria-current', isCurrentPage ? 'page' : 'false');
 			});
-
-			firstButton.disabled = currentPage === 1;
-			prevButton.disabled = currentPage === 1;
-			nextButton.disabled = currentPage === totalPages;
-			lastButton.disabled = currentPage === totalPages;
-
-			window.sessionStorage.setItem(storageKey, String(currentPage));
 		};
-
-		const moveToPage = (page) => {
-			currentPage = Math.min(totalPages, Math.max(1, page));
-			updatePagination();
-		};
-
-		pagesContainer.querySelectorAll('[data-pagination-page]').forEach((button) => {
-			if (!isHTMLElement(button)) {
-				return;
-			}
-
-			button.addEventListener('click', () => {
-				moveToPage(Number(button.dataset.paginationPage));
-			});
-		});
-
-		firstButton.addEventListener('click', () => {
-			moveToPage(1);
-		});
-
-		prevButton.addEventListener('click', () => {
-			moveToPage(currentPage - 1);
-		});
-
-		nextButton.addEventListener('click', () => {
-			moveToPage(currentPage + 1);
-		});
-
-		lastButton.addEventListener('click', () => {
-			moveToPage(totalPages);
-		});
 
 		updatePagination();
 	});
