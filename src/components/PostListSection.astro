@@ -83,6 +83,12 @@ function getResolvedHeroImage(post) {
 
 	<Pagination totalPages={totalPages} currentPage={currentPage} />
 </section>
+<style is:global>
+	html.pagination-pending .paginatedPostSection .myPostList,
+	html.pagination-pending .paginatedPostSection [data-pagination] {
+		visibility: hidden;
+	}
+</style>
 
 <script>
 	const isHTMLElement = (element) => element instanceof HTMLElement;
@@ -140,4 +146,6 @@ function getResolvedHeroImage(post) {
 
 		updatePagination();
 	});
+
+	document.documentElement.classList.remove('pagination-pending');
 </script>
