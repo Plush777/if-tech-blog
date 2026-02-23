@@ -1,0 +1,136 @@
+---
+const { pageSize = 8, totalPages = 1 } = Astro.props;
+const safePageSize = Math.max(1, Number(pageSize) || 8);
+const safeTotalPages = Math.max(1, Number(totalPages) || 1);
+const pageButtonCount = Math.min(safeTotalPages, 5);
+---
+
+<div class="paginationSkeleton" data-pagination-skeleton aria-hidden="true">
+	<ul class="paginationSkeletonList" data-skeleton-post-list>
+		{
+			Array.from({ length: safePageSize }).map(() => (
+				<li class="myPostItem paginationSkeletonCard">
+					<div class="paginationSkeletonThumb"></div>
+					<div class="paginationSkeletonBody">
+						<div class="paginationSkeletonLine paginationSkeletonLine--title"></div>
+						<div class="paginationSkeletonLine paginationSkeletonLine--desc"></div>
+						<div class="paginationSkeletonLine paginationSkeletonLine--descShort"></div>
+						<div class="paginationSkeletonLine paginationSkeletonLine--meta"></div>
+					</div>
+				</li>
+			))
+		}
+	</ul>
+
+	<div class="postPagination paginationSkeletonPagination" data-skeleton-pagination>
+		<div class="paginationButton paginationSkeletonButton"></div>
+		{
+			Array.from({ length: pageButtonCount }).map(() => (
+				<div class="paginationButton paginationSkeletonButton"></div>
+			))
+		}
+		<div class="paginationButton paginationSkeletonButton"></div>
+	</div>
+</div>
+
+<style>
+
+	:global(.blogPage .paginationSkeletonList) {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(342px, 1fr));
+		gap: 24px;
+	}
+
+	:global(.blogPage .paginationSkeletonCard) {
+		height: 400px;
+		border-radius: 12px;
+	}
+
+	.paginationSkeletonCard {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		border: 1px solid var(--c000-a1);
+		background: var(--fff);
+	}
+
+	.paginationSkeletonThumb {
+		height: 220px;
+		background: linear-gradient(90deg, #eef1f6 25%, #e3e8f1 37%, #eef1f6 63%);
+		background-size: 400% 100%;
+		animation: skeleton-shimmer 1.2s ease-in-out infinite;
+	}
+
+	.paginationSkeletonBody {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 16px;
+	}
+
+	.paginationSkeletonLine {
+		height: 14px;
+		border-radius: 6px;
+		background: linear-gradient(90deg, #eef1f6 25%, #e3e8f1 37%, #eef1f6 63%);
+		background-size: 400% 100%;
+		animation: skeleton-shimmer 1.2s ease-in-out infinite;
+	}
+
+	.paginationSkeletonLine--title {
+		height: 22px;
+		width: 72%;
+	}
+
+	.paginationSkeletonLine--desc {
+		width: 90%;
+	}
+
+	.paginationSkeletonLine--descShort {
+		width: 65%;
+	}
+
+	.paginationSkeletonLine--meta {
+		width: 35%;
+		margin-top: 12px;
+	}
+
+	.paginationSkeletonPagination {
+		margin-top: 28px;
+	}
+
+	.paginationSkeletonButton {
+		pointer-events: none;
+		background: linear-gradient(90deg, #eef1f6 25%, #e3e8f1 37%, #eef1f6 63%);
+		background-size: 400% 100%;
+		animation: skeleton-shimmer 1.2s ease-in-out infinite;
+		border-color: transparent;
+	}
+
+
+	@media (max-width: 1480px) {
+		:global(.blogPage .paginationSkeletonList) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (max-width: 1024px) {
+		:global(.blogPage .paginationSkeletonList) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 768px) {
+		:global(.blogPage .paginationSkeletonList) {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@keyframes skeleton-shimmer {
+		0% {
+			background-position: 100% 0;
+		}
+		100% {
+			background-position: 0 0;
+		}
+	}
+</style>
