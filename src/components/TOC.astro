@@ -23,45 +23,77 @@ const { headings } = Astro.props;
 	// @ts-nocheck
 	// https://stackoverflow.com/questions/55632954/ignore-all-errors-in-a-typescript-file
 	const articleInner = document.querySelector('.articleInner');
-	const headings = articleInner.querySelectorAll('h2, h3, h4');
 
-	headings.forEach((heading) => heading.classList.add('heading'));
+	if (articleInner) {
+		const headings = articleInner.querySelectorAll('h2, h3, h4');
 
-	const tocInner = document.querySelector('.tocInner');
-	const tocItems = document.querySelectorAll('.tocLink');
-	const tags = document.querySelectorAll('.heading');
+		headings.forEach((heading) => heading.classList.add('heading'));
 
-	tocItems.forEach((item, index) => (item.dataset.index = index));
-	tags.forEach((tag, index) => (tag.dataset.index = index));
+		const tocInner = document.querySelector('.tocInner');
+		const tocItems = document.querySelectorAll('.tocLink');
+		const tags = document.querySelectorAll('.heading');
+		const header = document.querySelector('#header');
+		const EXTRA_OFFSET = 12;
 
-	tocInner?.addEventListener('click', (e) => {
-		if (e.target.matches('.tocLink')) {
-			e.preventDefault();
-			const index = e.target.dataset.index;
-			tags[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
-		}
-	});
+		tocItems.forEach((item, index) => (item.dataset.index = index));
+		tags.forEach((tag, index) => (tag.dataset.index = index));
 
-	let selectedIndex = 0;
+		let selectedIndex = -1;
 
-	const observerCallback = (entries) => {
-		entries.forEach((entry) => {
-			if (entry.isIntersecting) {
-				tocItems[selectedIndex]?.classList.remove('active');
-				selectedIndex = entry.target.dataset.index;
-				tocItems[selectedIndex]?.classList.add('active');
-			} else if (entry.boundingClientRect.y > 100) {
-				tocItems[selectedIndex]?.classList.remove('active');
-				selectedIndex = Number(entry.target.dataset.index) - 1;
-				tocItems[selectedIndex]?.classList.add('active');
+		const setActiveItem = (nextIndex) => {
+			if (nextIndex < 0 || nextIndex >= tocItems.length || nextIndex === selectedIndex) return;
+
+			tocItems[selectedIndex]?.classList.remove('active');
+			selectedIndex = nextIndex;
+			tocItems[selectedIndex]?.classList.add('active');
+		};
+
+		const getHeaderBottom = () => {
+			if (!header) return EXTRA_OFFSET;
+
+			return header.getBoundingClientRect().bottom + EXTRA_OFFSET;
+		};
+
+		const updateActiveFromScroll = () => {
+			const headerBottom = getHeaderBottom();
+			let nextIndex = 0;
+
+			tags.forEach((tag, index) => {
+				if (tag.getBoundingClientRect().top <= headerBottom) {
+					nextIndex = index;
+				}
+			});
+
+			setActiveItem(nextIndex);
+		};
+
+		let ticking = false;
+		const handleScroll = () => {
+			if (ticking) return;
+			ticking = true;
+			requestAnimationFrame(() => {
+				updateActiveFromScroll();
+				ticking = false;
+			});
+		};
+
+		tocInner?.addEventListener('click', (e) => {
+			if (e.target.matches('.tocLink')) {
+				e.preventDefault();
+				const index = Number(e.target.dataset.index);
+				const target = tags[index];
+
+				if (!target) return;
+
+				const top = window.scrollY + target.getBoundingClientRect().top - getHeaderBottom();
+				window.scrollTo({ top, behavior: 'smooth' });
+				setActiveItem(index);
 			}
 		});
-	};
 
-	const observer = new IntersectionObserver(observerCallback, {
-		threshold: 1,
-		rootMargin: '-60px 0px 0px 0px'
-	});
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		window.addEventListener('resize', handleScroll);
 
-	tags.forEach((tag) => observer.observe(tag));
+		updateActiveFromScroll();
+	}
 </script>
