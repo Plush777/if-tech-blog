@@ -37,6 +37,20 @@ function getPostHref(post) {
 	return `${linkPrefix}/${post.slug}/`;
 }
 
+function getPostPubDate(post) {
+	const { pubDate } = post.data;
+
+	if (!withBehavior && typeof pubDate === 'string') {
+		const parsedDate = new Date(pubDate);
+
+		if (!Number.isNaN(parsedDate.getTime())) {
+			return parsedDate;
+		}
+	}
+
+	return pubDate;
+}
+
 console.log(data);
 ---
 
@@ -88,7 +102,7 @@ console.log(data);
 								</div>
 
 								<p class="myPostDate">
-									<FormattedDate date={post.data.pubDate} />
+									<FormattedDate date={getPostPubDate(post)} />
 								</p>
 							</div>
 						</div>
