@@ -3,16 +3,33 @@ import LogoWrapper from './LogoWrapper.astro';
 import PopupClose from './icons/PopupClose.astro';
 import Input from './Input.astro';
 import { getCollection } from 'astro:content';
+import { hasPostAssetFile, resolvePostFilePath } from '../utils/postAssetPath.js';
 
 const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.map((post) => ({
-		title: post.data.title,
-		slug: post.slug,
-		description: post.data.description,
-		category: post.data.category ?? '',
-		heroImage: post.data.heroImage
-	}));
+	.map((post) => {
+		const hasHeroImage = hasPostAssetFile({
+			src: post.data.heroImage,
+			pubDate: post.data.pubDate,
+			category: post.data.category,
+			type: 'assets'
+		});
+
+		return {
+			title: post.data.title,
+			slug: post.slug,
+			description: post.data.description,
+			category: post.data.category ?? '',
+			heroImage: hasHeroImage
+				? resolvePostFilePath({
+					src: post.data.heroImage,
+					pubDate: post.data.pubDate,
+					category: post.data.category,
+					type: 'assets'
+				})
+				: null
+		};
+	});
 ---
 
 <div id="search-popup" class="search-popup" data-posts={JSON.stringify(posts)}>
@@ -66,19 +83,18 @@ const posts = (await getCollection('blog'))
 		textArea.append(title, description);
 		link.append(textArea);
 
-		const thumbnail = document.createElement('img');
-		thumbnail.className = 'search-popup-thumbnail';
-		thumbnail.src = post.heroImage || '/og.png';
-		thumbnail.alt = `${post.title} 썸네일`;
-		thumbnail.loading = 'lazy';
-		thumbnail.decoding = 'async';
-		thumbnail.width = 84;
-		thumbnail.height = 84;
-		thumbnail.onerror = () => {
-			thumbnail.src = '/og.png';
-		};
+		if (post.heroImage) {
+			const thumbnail = document.createElement('img');
+			thumbnail.className = 'search-popup-thumbnail';
+			thumbnail.src = post.heroImage;
+			thumbnail.alt = `${post.title} 썸네일`;
+			thumbnail.loading = 'lazy';
+			thumbnail.decoding = 'async';
+			thumbnail.width = 84;
+			thumbnail.height = 84;
 
-		link.append(thumbnail);
+			link.append(thumbnail);
+		}
 
 		item.append(link);
 		return item;
@@ -144,10 +160,6 @@ const posts = (await getCollection('blog'))
 		document.body.style.overflow = 'auto';
 		searchPopup.classList.remove('active');
 		resetSearch();
-	});
-
-	searchInput?.addEventListener('input', (event) => {
-		renderPostList(event.target.value);
 	});
 
 	searchInput?.addEventListener('input', (event) => {
