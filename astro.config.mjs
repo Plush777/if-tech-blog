@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import astrobook from 'astrobook';
 
 import tailwindcss from '@tailwindcss/vite';
 import rehypePostAssetPaths from './src/utils/rehypePostAssetPaths.mjs';
@@ -16,5 +17,14 @@ export default defineConfig({
 	},
 	vite: {
 		plugins: [tailwindcss()]
-	}
+	},
+	integrations: [
+		astrobook({
+			subpath: '/components',
+			directory: 'src/stories',
+			head: './src/components/astrobook/preview/CodePreview.astro',
+
+			css: ['public/styles/guide/astrobook.css', 'public/lib/highlight/highlight.min.css']
+		})
+	]
 });

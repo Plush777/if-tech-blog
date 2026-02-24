@@ -1,0 +1,108 @@
+main[class*='astrobook'] {
+	display: flex;
+	flex-direction: column;
+}
+main[class*='astrobook'] .code-area {
+	height: 100%;
+}
+main[class*='astrobook'] .code-area pre {
+	max-height: 100%;
+	height: 100%;
+}
+
+.custom-astrobook-code-root {
+	margin-left: auto;
+	width: calc(100% - 256px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+}
+
+.custom-astrobook-code-top {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	height: 40px;
+	min-height: 40px;
+	border-top: 1px solid #e5e7eb;
+	border-bottom: 1px solid #e5e7eb;
+	background-color: #f9fafb;
+}
+
+.custom-astrobook-code-top-tabs {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
+.custom-astrobook-code-top-tabs button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 14px;
+	padding: 0 16px;
+	color: #000;
+	height: 100%;
+}
+
+.custom-astrobook-code-top-buttons {
+	display: flex;
+	align-items: center;
+	column-gap: 10px;
+	height: 100%;
+	padding-right: 12px;
+}
+
+.custom-astrobook-code-top-buttons-close {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.custom-astrobook-code-top-buttons-close svg {
+	width: 20px;
+	height: 20px;
+}
+
+.custom-astrobook-code-bottom {
+	width: 100%;
+	padding: 16px;
+	background-color: #fff;
+	overflow-y: auto;
+	min-height: 200px;
+}
+.custom-astrobook-code-bottom .code-area {
+	height: 100%;
+	min-height: 200px;
+}
+.custom-astrobook-code-bottom .code-area pre {
+	height: 100%;
+	margin: 0;
+	font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.custom-astrobook-code-top-resize {
+	cursor: ns-resize;
+	width: 100%;
+	height: 6px;
+	background-color: transparent;
+	transition: background-color 0.3s ease;
+	position: absolute;
+	top: -3px;
+	left: 0;
+}
+
+.custom-astrobook-code-top-resize:hover,
+.custom-astrobook-code-top-resize:active {
+	background-color: #446eff;
+}

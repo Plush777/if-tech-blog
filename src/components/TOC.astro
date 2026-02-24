@@ -21,23 +21,36 @@ const { headings } = Astro.props;
 
 <script>
 	// @ts-nocheck
-	const articleInner = document.querySelector('.articleInner');
-	const tocInner = document.querySelector('.tocInner');
+	(() => {
+		const articleInner = document.querySelector('.articleInner');
+		const tocInner = document.querySelector('.tocInner');
 
-	if (articleInner && tocInner) {
-		const ACTIVATION_MARGIN = 2;
+		if (!articleInner || !tocInner) return;
+
+		const ACTIVATION_MARGIN = 10;
 		const tags = Array.from(articleInner.querySelectorAll('h2, h3, h4'));
 		const tocItems = Array.from(tocInner.querySelectorAll('.tocLink'));
 		const header = document.querySelector('#header');
+
+		// 개수 불일치/없음 방어
+		if (!tags.length || !tocItems.length) return;
 
 		tags.forEach((heading) => heading.classList.add('heading'));
 		tocItems.forEach((item, index) => (item.dataset.index = String(index)));
 
 		let selectedIndex = -1;
+		let headingTops = [];
 
-		const getActivationY = () => {
-			if (!header) return 0;
-			return header.getBoundingClientRect().bottom + ACTIVATION_MARGIN;
+		const getHeaderOffset = () => {
+			if (!header) return ACTIVATION_MARGIN;
+			return Math.round(header.getBoundingClientRect().height) + ACTIVATION_MARGIN;
+		};
+
+		const measureHeadingTops = () => {
+			headingTops = tags.map((tag) => {
+				const rect = tag.getBoundingClientRect();
+				return Math.round(window.scrollY + rect.top);
+			});
 		};
 
 		const keepActiveItemVisible = () => {
@@ -53,33 +66,32 @@ const { headings } = Astro.props;
 
 			if (itemTop < viewTop || itemBottom > viewBottom) {
 				tocInner.scrollTo({
-					top: itemTop - tocInner.clientHeight / 2 + selectedItem.offsetHeight,
-					behavior: 'smooth',
+					top: itemTop - tocInner.clientHeight / 2 + selectedItem.offsetHeight / 2,
+					behavior: 'smooth'
 				});
 			}
 		};
 
 		const setActiveItem = (nextIndex, options = { scroll: true }) => {
-			if (nextIndex < -1 || nextIndex >= tocItems.length || nextIndex === selectedIndex) return;
+			if (nextIndex < -1) nextIndex = -1;
+			if (nextIndex >= tocItems.length) nextIndex = tocItems.length - 1;
+			if (nextIndex === selectedIndex) return;
 
-			tocItems[selectedIndex]?.classList.remove('active');
+			if (selectedIndex >= 0) tocItems[selectedIndex]?.classList.remove('active');
 			selectedIndex = nextIndex;
-			tocItems[selectedIndex]?.classList.add('active');
+			if (selectedIndex >= 0) tocItems[selectedIndex]?.classList.add('active');
 
-			if (options.scroll) {
-				keepActiveItemVisible();
-			}
+			if (options.scroll) keepActiveItemVisible();
 		};
 
 		const updateActiveFromScroll = () => {
-			const activationY = getActivationY();
+			const y = window.scrollY + getHeaderOffset();
 			let nextIndex = -1;
 
-			tags.forEach((tag, index) => {
-				if (tag.getBoundingClientRect().top <= activationY) {
-					nextIndex = index;
-				}
-			});
+			for (let i = 0; i < headingTops.length; i++) {
+				if (headingTops[i] <= y) nextIndex = i;
+				else break;
+			}
 
 			setActiveItem(nextIndex);
 		};
@@ -88,6 +100,7 @@ const { headings } = Astro.props;
 		const handleScroll = () => {
 			if (ticking) return;
 			ticking = true;
+
 			requestAnimationFrame(() => {
 				updateActiveFromScroll();
 				ticking = false;
@@ -98,25 +111,37 @@ const { headings } = Astro.props;
 			const target = tags[index];
 			if (!target) return;
 
-			const top = window.scrollY + target.getBoundingClientRect().top - getActivationY();
-			window.scrollTo({ top, behavior: 'smooth' });
+			target.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start'
+			});
 		};
 
 		tocInner.addEventListener('click', (e) => {
-			const target = e.target;
-			if (!(target instanceof HTMLAnchorElement) || !target.matches('.tocLink')) return;
+			const link = e.target instanceof Element ? e.target.closest('.tocLink') : null;
+			if (!(link instanceof HTMLAnchorElement)) return;
 
 			e.preventDefault();
-			const index = Number(target.dataset.index);
+
+			const index = Number(link.dataset.index);
 			if (Number.isNaN(index)) return;
 
+			setActiveItem(index, { scroll: true });
 			scrollToHeading(index);
-			history.replaceState(null, '', target.getAttribute('href') || '#');
+
+			history.replaceState(null, '', link.getAttribute('href') || '#');
 		});
 
-		window.addEventListener('scroll', handleScroll, { passive: true });
-		window.addEventListener('resize', handleScroll);
+		const handleResize = () => {
+			measureHeadingTops();
+			updateActiveFromScroll();
+		};
 
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		window.addEventListener('resize', handleResize);
+		window.addEventListener('load', handleResize);
+
+		measureHeadingTops();
 		updateActiveFromScroll();
-	}
+	})();
 </script>

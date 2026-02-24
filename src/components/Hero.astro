@@ -4,7 +4,7 @@ const { hasHeroImage = false } = Astro.props;
 
 <div
 	class:list={[
-		'absolute top-0 left-0 w-full mt-[var(--header-height)] h-[var(--hero-height)]',
+		'relative w-full h-[var(--hero-height)]',
 		hasHeroImage &&
 			"before:content-[''] before:z-0 before:absolute before:top-0 before:left-0 before:size-full before:bg-black/20"
 	]}

@@ -37,18 +37,14 @@ import { COMPANY_INFO, COMPANY_MENUS } from '../consts';
 					COMPANY_INFO.map((item, index) => {
 						return (
 							<li class={`footer-menu-item item-0${index + 1}`}>
-								<a
-									href={item.content.href}
-									target={item.content.target == 'blank' ? '_blank' : '_self'}
-									class="footer-menu-link"
-								>
+								<span class="footer-menu-link">
 									<span class="footer-info-title">{item.content.title}</span>
 									{item.id === 2 ? (
 										<address class="footer-info-text">{item.content.desc}</address>
 									) : (
 										<span class="footer-info-text">{item.content.desc}</span>
 									)}
-								</a>
+								</span>
 							</li>
 						);
 					})

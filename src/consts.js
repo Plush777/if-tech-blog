@@ -89,7 +89,7 @@ export const COMPANY_MENUS = [
 		id: 5,
 		content: {
 			title: 'RSS',
-			target: null,
+			target: 'blank',
 			href: '/rss.xml'
 		}
 	}
