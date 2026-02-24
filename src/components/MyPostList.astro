@@ -3,7 +3,13 @@ import FormattedDate from './FormattedDate.astro';
 import Image from './Image.astro';
 import { hasPostAssetFile, resolvePostFilePath } from '../utils/postAssetPath.js';
 
-const { data, startIndex, pageSize } = Astro.props;
+const {
+	data = [],
+	startIndex = 0,
+	pageSize = data.length || 0,
+	withBehavior = true,
+	linkPrefix = '/posts'
+} = Astro.props;
 
 function hasValidHeroImage(post) {
 	return hasPostAssetFile({
@@ -22,9 +28,17 @@ function getResolvedHeroImage(post) {
 		type: 'assets'
 	});
 }
+
+function getPostHref(post) {
+	if (!withBehavior) {
+		return '#';
+	}
+
+	return `${linkPrefix}/${post.slug}/`;
+}
 ---
 
-<ul class="myPostList" data-post-list>
+<ul class="myPostList" data-post-list={withBehavior ? '' : undefined}>
 	{
 		data.map((post, index) => {
 			const hasHeroImage = hasValidHeroImage(post);
@@ -33,11 +47,16 @@ function getResolvedHeroImage(post) {
 			return (
 				<li
 					class="myPostItem"
-					data-post-item
-					data-post-index={index}
-					hidden={!isVisibleInCurrentPage}
+					data-post-item={withBehavior ? '' : undefined}
+					data-post-index={withBehavior ? index : undefined}
+					hidden={withBehavior ? !isVisibleInCurrentPage : undefined}
 				>
-					<a href={`/posts/${post.slug}/`} class="myPostLink">
+					<a
+						href={getPostHref(post)}
+						class="myPostLink"
+						aria-disabled={withBehavior ? undefined : 'true'}
+						tabindex={withBehavior ? undefined : '-1'}
+					>
 						{hasHeroImage && (
 							<div class="myPostTopBox">
 								<Image

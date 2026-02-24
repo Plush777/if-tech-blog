@@ -23,9 +23,9 @@ const startIndex = (currentPage - 1) * pageSize;
 		<Skeleton type="card" pageSize={pageSize} />
 		<Skeleton type="pagination" totalPages={totalPages} />
 	</div>
-	<MyPostList data={data} startIndex={startIndex} pageSize={pageSize} />
+	<MyPostList data={data} startIndex={startIndex} pageSize={pageSize} withBehavior />
 
-	<Pagination totalPages={totalPages} currentPage={currentPage} />
+	<Pagination totalPages={totalPages} currentPage={currentPage} withBehavior />
 </section>
 
 <style is:global>

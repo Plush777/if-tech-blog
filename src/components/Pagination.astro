@@ -1,36 +1,49 @@
 ---
-const { totalPages = 1, currentPage = 1 } = Astro.props;
+const { totalPages = 1, currentPage = 1, withBehavior = true } = Astro.props;
 
 const safeTotalPages = Math.max(1, Number(totalPages) || 1);
 const safeCurrentPage = Math.min(safeTotalPages, Math.max(1, Number(currentPage) || 1));
 const pathname = Astro.url.pathname;
 
 function getPageHref(page) {
+	if (!withBehavior) {
+		return '#';
+	}
+
 	return page === 1 ? pathname : `${pathname}?page=${page}`;
 }
 ---
 
-<nav class="postPagination" data-pagination aria-label="포스트 페이지네이션" data-total-pages={safeTotalPages}>
+<nav
+	class="postPagination"
+	data-pagination={withBehavior ? '' : undefined}
+	aria-label="포스트 페이지네이션"
+	data-total-pages={withBehavior ? safeTotalPages : undefined}
+>
 	<a
 		class="paginationButton"
-		data-pagination-control="prev"
+		data-pagination-control={withBehavior ? 'prev' : undefined}
 		href={getPageHref(Math.max(1, safeCurrentPage - 1))}
 		aria-label="이전 페이지로 이동"
+		aria-disabled={withBehavior ? undefined : 'true'}
+		tabindex={withBehavior ? undefined : '-1'}
 	>
 		&lt;
 	</a>
 
-	<ul class="paginationList" data-pagination-pages>
+	<ul class="paginationList" data-pagination-pages={withBehavior ? '' : undefined}>
 		{
 			Array.from({ length: safeTotalPages }, (_, index) => index + 1).map((page) => (
 				<li>
 					<a
 						href={getPageHref(page)}
-						data-page-link
-						data-page={page}
+						data-page-link={withBehavior ? '' : undefined}
+						data-page={withBehavior ? page : undefined}
 						class:list={['paginationButton', page === safeCurrentPage && 'is-active']}
 						aria-label={`${page}페이지로 이동`}
 						aria-current={page === safeCurrentPage ? 'page' : 'false'}
+						aria-disabled={withBehavior ? undefined : 'true'}
+						tabindex={withBehavior ? undefined : '-1'}
 					>
 						{page}
 					</a>
@@ -41,9 +54,11 @@ function getPageHref(page) {
 
 	<a
 		class="paginationButton"
-		data-pagination-control="next"
+		data-pagination-control={withBehavior ? 'next' : undefined}
 		href={getPageHref(Math.min(safeTotalPages, safeCurrentPage + 1))}
 		aria-label="다음 페이지로 이동"
+		aria-disabled={withBehavior ? undefined : 'true'}
+		tabindex={withBehavior ? undefined : '-1'}
 	>
 		&gt;
 	</a>
