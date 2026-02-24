@@ -344,6 +344,7 @@
 	justify-content: space-between;
 	gap: 32px;
 	overflow: hidden;
+	min-height: 92px;
 
 	&:hover {
 		.search-popup-title {
@@ -371,7 +372,11 @@
 .search-popup-description {
 	font-size: 16px;
 	color: var(--color-gray-500);
-	word-break: keep-all;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .search-popup-thumbnail {

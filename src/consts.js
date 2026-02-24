@@ -6,7 +6,7 @@ export const SITE = {
 	ogType: 'website',
 	twitterCard: 'summary',
 	robots: 'index,follow',
-	url: ''
+	url: 'https://ifcommunity-tech.netlify.app/'
 };
 
 export const HEADER_MENUS = [
