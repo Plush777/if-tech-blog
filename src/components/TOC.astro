@@ -41,7 +41,7 @@ const { headings } = Astro.props;
 		let selectedIndex = -1;
 
 		const setActiveItem = (nextIndex) => {
-			if (nextIndex < 0 || nextIndex >= tocItems.length || nextIndex === selectedIndex) return;
+			if (nextIndex < -1 || nextIndex >= tocItems.length || nextIndex === selectedIndex) return;
 
 			tocItems[selectedIndex]?.classList.remove('active');
 			selectedIndex = nextIndex;
@@ -55,6 +55,8 @@ const { headings } = Astro.props;
 		};
 
 		const getGroupedActiveIndex = (index) => {
+			if (index < 0) return -1;
+
 			let nextIndex = index;
 
 			while (nextIndex > 0 && tocItems[nextIndex - 1]?.title === tocItems[nextIndex]?.title) {
@@ -66,7 +68,7 @@ const { headings } = Astro.props;
 
 		const updateActiveFromScroll = () => {
 			const headerBottom = getHeaderBottom();
-			let nextIndex = 0;
+			let nextIndex = -1;
 
 			tags.forEach((tag, index) => {
 				if (tag.getBoundingClientRect().top <= headerBottom) {
