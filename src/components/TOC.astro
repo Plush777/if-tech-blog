@@ -32,12 +32,13 @@ const { headings } = Astro.props;
 		const tocInner = document.querySelector('.tocInner');
 		const tocItems = document.querySelectorAll('.tocLink');
 		const tags = document.querySelectorAll('.heading');
+		const header = document.querySelector('#header');
+		const EXTRA_OFFSET = 12;
 
 		tocItems.forEach((item, index) => (item.dataset.index = index));
 		tags.forEach((tag, index) => (tag.dataset.index = index));
 
-		let selectedIndex = 0;
-		const HEADING_OFFSET = 140;
+		let selectedIndex = -1;
 
 		const setActiveItem = (nextIndex) => {
 			if (nextIndex < 0 || nextIndex >= tocItems.length || nextIndex === selectedIndex) return;
@@ -47,11 +48,18 @@ const { headings } = Astro.props;
 			tocItems[selectedIndex]?.classList.add('active');
 		};
 
+		const getHeaderBottom = () => {
+			if (!header) return EXTRA_OFFSET;
+
+			return header.getBoundingClientRect().bottom + EXTRA_OFFSET;
+		};
+
 		const updateActiveFromScroll = () => {
+			const headerBottom = getHeaderBottom();
 			let nextIndex = 0;
 
 			tags.forEach((tag, index) => {
-				if (tag.getBoundingClientRect().top - HEADING_OFFSET <= 0) {
+				if (tag.getBoundingClientRect().top <= headerBottom) {
 					nextIndex = index;
 				}
 			});
@@ -72,8 +80,14 @@ const { headings } = Astro.props;
 		tocInner?.addEventListener('click', (e) => {
 			if (e.target.matches('.tocLink')) {
 				e.preventDefault();
-				const index = e.target.dataset.index;
-				tags[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+				const index = Number(e.target.dataset.index);
+				const target = tags[index];
+
+				if (!target) return;
+
+				const top = window.scrollY + target.getBoundingClientRect().top - getHeaderBottom();
+				window.scrollTo({ top, behavior: 'smooth' });
+				setActiveItem(index);
 			}
 		});
 
