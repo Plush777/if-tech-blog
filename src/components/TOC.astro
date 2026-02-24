@@ -54,6 +54,16 @@ const { headings } = Astro.props;
 			return header.getBoundingClientRect().bottom + EXTRA_OFFSET;
 		};
 
+		const getGroupedActiveIndex = (index) => {
+			let nextIndex = index;
+
+			while (nextIndex > 0 && tocItems[nextIndex - 1]?.title === tocItems[nextIndex]?.title) {
+				nextIndex -= 1;
+			}
+
+			return nextIndex;
+		};
+
 		const updateActiveFromScroll = () => {
 			const headerBottom = getHeaderBottom();
 			let nextIndex = 0;
@@ -64,7 +74,7 @@ const { headings } = Astro.props;
 				}
 			});
 
-			setActiveItem(nextIndex);
+			setActiveItem(getGroupedActiveIndex(nextIndex));
 		};
 
 		let ticking = false;
