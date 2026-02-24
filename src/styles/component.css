@@ -109,8 +109,14 @@
 	border-radius: inherit;
 }
 
+#toc a {
+	display: block;
+	transform: scale(1);
+}
+
 #toc a.active {
 	color: var(--primary1);
+	transform: scale(1.05);
 	font-weight: 600;
 }
 

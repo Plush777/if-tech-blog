@@ -161,14 +161,29 @@
 	padding-left: 20px;
 }
 
-/* */
 .articleContainer .tocInner a {
 	text-decoration: none;
+	transition: .3s ease-in-out;
 }
 
 .articleContainer .tocInner li {
+	font-size: 16px;
 	list-style: none;
-	margin-bottom: 8px;
+	margin-bottom: 16px;
+
+	&.tocDepth3 {
+		font-size: 14px;
+		margin-bottom: 0;
+
+		+ .tocDepth2 {
+			margin-top: 16px;
+			margin-bottom: 16px;
+		}
+
+		+ .tocDepth3 {
+			margin-top: 8px;
+		}
+	}
 }
 
 .articleContainer .tocInner ul,
