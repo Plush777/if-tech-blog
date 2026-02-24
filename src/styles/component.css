@@ -116,18 +116,15 @@
 
 #toc a.active {
 	color: var(--primary1);
-	font-weight: 700;
+	font-weight: 600;
+	transform: scale(1.05);
 }
 
 #toc .tocLink {
 	display: inline-flex;
 	line-height: 1.5;
-	color: var(--c000-a6);
-	transition: color 0.2s ease;
-}
-
-#toc .tocLink:hover {
-	color: var(--c000);
+	color: var(--color-gray-800);
+	transition: 0.2s ease;
 }
 
 #toc li {
