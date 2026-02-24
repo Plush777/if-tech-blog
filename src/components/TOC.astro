@@ -25,6 +25,7 @@ const { headings } = Astro.props;
 	const tocInner = document.querySelector('.tocInner');
 
 	if (articleInner && tocInner) {
+		const ACTIVATION_MARGIN = 2;
 		const tags = Array.from(articleInner.querySelectorAll('h2, h3, h4'));
 		const tocItems = Array.from(tocInner.querySelectorAll('.tocLink'));
 		const header = document.querySelector('#header');
@@ -36,7 +37,7 @@ const { headings } = Astro.props;
 
 		const getActivationY = () => {
 			if (!header) return 0;
-			return header.getBoundingClientRect().bottom + 12;
+			return header.getBoundingClientRect().bottom + ACTIVATION_MARGIN;
 		};
 
 		const keepActiveItemVisible = () => {
@@ -110,18 +111,11 @@ const { headings } = Astro.props;
 			if (Number.isNaN(index)) return;
 
 			scrollToHeading(index);
-			setActiveItem(index);
 			history.replaceState(null, '', target.getAttribute('href') || '#');
 		});
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
 		window.addEventListener('resize', handleScroll);
-
-		const hash = decodeURIComponent(window.location.hash || '');
-		const initialIndex = tocItems.findIndex((item) => item.getAttribute('href') === hash);
-		if (initialIndex >= 0) {
-			setActiveItem(initialIndex, { scroll: false });
-		}
 
 		updateActiveFromScroll();
 	}
