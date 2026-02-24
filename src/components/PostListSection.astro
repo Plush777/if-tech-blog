@@ -95,16 +95,35 @@ const startIndex = (currentPage - 1) * pageSize;
 		const pageLinks = Array.from(section.querySelectorAll('[data-page-link]')).filter(
 			isHTMLAnchorElement
 		);
-		pageLinks.forEach((pageLink) => {
-			const linkPage = Number.parseInt(pageLink.dataset.page ?? '1', 10);
-			const normalizedLinkPage = Number.isNaN(linkPage)
-				? 1
-				: Math.min(totalPages, Math.max(1, linkPage));
-			const isCurrentPage = normalizedLinkPage === currentPage;
+		const maxVisiblePages = pageLinks.length;
+		const currentGroup = Math.floor((currentPage - 1) / Math.max(1, maxVisiblePages));
+		const startPage = currentGroup * Math.max(1, maxVisiblePages) + 1;
+		const endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
-			pageLink.href = createPageHref(normalizedLinkPage);
+		pageLinks.forEach((pageLink, index) => {
+			const page = startPage + index;
+			const listItem = pageLink.closest('li');
+
+			if (page > endPage) {
+				if (isHTMLElement(listItem)) {
+					listItem.hidden = true;
+				}
+
+				return;
+			}
+
+			if (isHTMLElement(listItem)) {
+				listItem.hidden = false;
+			}
+
+			const isCurrentPage = page === currentPage;
+
+			pageLink.dataset.page = String(page);
+			pageLink.textContent = String(page);
+			pageLink.href = createPageHref(page);
 			pageLink.classList.toggle('is-active', isCurrentPage);
 			pageLink.setAttribute('aria-current', isCurrentPage ? 'page' : 'false');
+			pageLink.setAttribute('aria-label', `${page}페이지로 이동`);
 		});
 
 		const prevControl = section.querySelector('[data-pagination-control="prev"]');
