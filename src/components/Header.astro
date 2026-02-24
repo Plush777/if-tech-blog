@@ -30,15 +30,36 @@ import HeaderMenus from '@/components/HeaderMenus.astro';
 
 <script is:inline>
 	const btnMobileMenu = document.querySelector('.btnMobileMenu');
+	const header = document.querySelector('#header');
+	let lastScrollY = window.scrollY;
+
+	const handleHeaderScroll = () => {
+		if (!header || header.classList.contains('active')) {
+			lastScrollY = window.scrollY;
+			return;
+		}
+
+		const currentScrollY = window.scrollY;
+
+		if (currentScrollY <= 0 || currentScrollY < lastScrollY) {
+			header.classList.remove('scroll-down');
+		} else if (currentScrollY > lastScrollY) {
+			header.classList.add('scroll-down');
+		}
+
+		lastScrollY = currentScrollY;
+	};
+
+	window.addEventListener('scroll', handleHeaderScroll, { passive: true });
 
 	btnMobileMenu.addEventListener('click', () => {
-		const header = document.querySelector('#header');
 		const svgMobileMenu = document.getElementById('svgMobileMenu');
 		const svgMobileMenuClose = document.getElementById('svgMobileMenuClose');
 
 		header.classList.toggle('active');
 
 		if (header.classList.contains('active')) {
+			header.classList.remove('scroll-down');
 			svgMobileMenu.style.display = 'none';
 			svgMobileMenuClose.style.display = 'block';
 		} else {
