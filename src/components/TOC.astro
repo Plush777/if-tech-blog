@@ -21,48 +21,53 @@ const { headings } = Astro.props;
 
 <script>
 	// @ts-nocheck
-	// https://stackoverflow.com/questions/55632954/ignore-all-errors-in-a-typescript-file
 	const articleInner = document.querySelector('.articleInner');
+	const tocInner = document.querySelector('.tocInner');
 
-	if (articleInner) {
-		const headings = articleInner.querySelectorAll('h2, h3, h4');
-
-		headings.forEach((heading) => heading.classList.add('heading'));
-
-		const tocInner = document.querySelector('.tocInner');
-		const tocItems = document.querySelectorAll('.tocLink');
-		const tags = document.querySelectorAll('.heading');
+	if (articleInner && tocInner) {
+		const tags = Array.from(articleInner.querySelectorAll('h2, h3, h4'));
+		const tocItems = Array.from(tocInner.querySelectorAll('.tocLink'));
 		const header = document.querySelector('#header');
 
-		tocItems.forEach((item, index) => (item.dataset.index = index));
-		tags.forEach((tag, index) => (tag.dataset.index = index));
+		tags.forEach((heading) => heading.classList.add('heading'));
+		tocItems.forEach((item, index) => (item.dataset.index = String(index)));
 
 		let selectedIndex = -1;
 
-		const setActiveItem = (nextIndex) => {
+		const getActivationY = () => {
+			if (!header) return 0;
+			return header.getBoundingClientRect().bottom + 12;
+		};
+
+		const keepActiveItemVisible = () => {
+			if (selectedIndex < 0) return;
+
+			const selectedItem = tocItems[selectedIndex];
+			if (!selectedItem) return;
+
+			const itemTop = selectedItem.offsetTop;
+			const itemBottom = itemTop + selectedItem.offsetHeight;
+			const viewTop = tocInner.scrollTop;
+			const viewBottom = viewTop + tocInner.clientHeight;
+
+			if (itemTop < viewTop || itemBottom > viewBottom) {
+				tocInner.scrollTo({
+					top: itemTop - tocInner.clientHeight / 2 + selectedItem.offsetHeight,
+					behavior: 'smooth',
+				});
+			}
+		};
+
+		const setActiveItem = (nextIndex, options = { scroll: true }) => {
 			if (nextIndex < -1 || nextIndex >= tocItems.length || nextIndex === selectedIndex) return;
 
 			tocItems[selectedIndex]?.classList.remove('active');
 			selectedIndex = nextIndex;
 			tocItems[selectedIndex]?.classList.add('active');
-		};
 
-		const getActivationY = () => {
-			if (!header) return 0;
-
-			return header.getBoundingClientRect().bottom;
-		};
-
-		const getGroupedActiveIndex = (index) => {
-			if (index < 0) return -1;
-
-			let nextIndex = index;
-
-			while (nextIndex > 0 && tocItems[nextIndex - 1]?.title === tocItems[nextIndex]?.title) {
-				nextIndex -= 1;
+			if (options.scroll) {
+				keepActiveItemVisible();
 			}
-
-			return nextIndex;
 		};
 
 		const updateActiveFromScroll = () => {
@@ -75,7 +80,7 @@ const { headings } = Astro.props;
 				}
 			});
 
-			setActiveItem(getGroupedActiveIndex(nextIndex));
+			setActiveItem(nextIndex);
 		};
 
 		let ticking = false;
@@ -88,22 +93,35 @@ const { headings } = Astro.props;
 			});
 		};
 
-		tocInner?.addEventListener('click', (e) => {
-			if (e.target.matches('.tocLink')) {
-				e.preventDefault();
-				const index = Number(e.target.dataset.index);
-				const target = tags[index];
+		const scrollToHeading = (index) => {
+			const target = tags[index];
+			if (!target) return;
 
-				if (!target) return;
+			const top = window.scrollY + target.getBoundingClientRect().top - getActivationY();
+			window.scrollTo({ top, behavior: 'smooth' });
+		};
 
-				const top = window.scrollY + target.getBoundingClientRect().top - getActivationY();
-				window.scrollTo({ top, behavior: 'smooth' });
-				setActiveItem(index);
-			}
+		tocInner.addEventListener('click', (e) => {
+			const target = e.target;
+			if (!(target instanceof HTMLAnchorElement) || !target.matches('.tocLink')) return;
+
+			e.preventDefault();
+			const index = Number(target.dataset.index);
+			if (Number.isNaN(index)) return;
+
+			scrollToHeading(index);
+			setActiveItem(index);
+			history.replaceState(null, '', target.getAttribute('href') || '#');
 		});
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
 		window.addEventListener('resize', handleScroll);
+
+		const hash = decodeURIComponent(window.location.hash || '');
+		const initialIndex = tocItems.findIndex((item) => item.getAttribute('href') === hash);
+		if (initialIndex >= 0) {
+			setActiveItem(initialIndex, { scroll: false });
+		}
 
 		updateActiveFromScroll();
 	}

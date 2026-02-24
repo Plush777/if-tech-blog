@@ -116,8 +116,33 @@
 
 #toc a.active {
 	color: var(--primary1);
-	transform: scale(1.05);
-	font-weight: 600;
+	font-weight: 700;
+}
+
+#toc .tocLink {
+	display: inline-flex;
+	line-height: 1.5;
+	color: var(--c000-a6);
+	transition: color 0.2s ease;
+}
+
+#toc .tocLink:hover {
+	color: var(--c000);
+}
+
+#toc li {
+	position: relative;
+}
+
+#toc li:has(.tocLink.active)::before {
+	content: '';
+	position: absolute;
+	left: -17px;
+	top: 2px;
+	width: 2px;
+	height: calc(100% - 4px);
+	background: var(--primary1);
+	border-radius: 999px;
 }
 
 #toc.active .tocInner {
