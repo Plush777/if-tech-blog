@@ -66,19 +66,18 @@ const posts = (await getCollection('blog'))
 		textArea.append(title, description);
 		link.append(textArea);
 
-		const thumbnail = document.createElement('img');
-		thumbnail.className = 'search-popup-thumbnail';
-		thumbnail.src = post.heroImage || '/og.png';
-		thumbnail.alt = `${post.title} 썸네일`;
-		thumbnail.loading = 'lazy';
-		thumbnail.decoding = 'async';
-		thumbnail.width = 84;
-		thumbnail.height = 84;
-		thumbnail.onerror = () => {
-			thumbnail.src = '/og.png';
-		};
+		if (post.heroImage) {
+			const thumbnail = document.createElement('img');
+			thumbnail.className = 'search-popup-thumbnail';
+			thumbnail.src = post.heroImage;
+			thumbnail.alt = `${post.title} 썸네일`;
+			thumbnail.loading = 'lazy';
+			thumbnail.decoding = 'async';
+			thumbnail.width = 84;
+			thumbnail.height = 84;
 
-		link.append(thumbnail);
+			link.append(thumbnail);
+		}
 
 		item.append(link);
 		return item;
@@ -144,10 +143,6 @@ const posts = (await getCollection('blog'))
 		document.body.style.overflow = 'auto';
 		searchPopup.classList.remove('active');
 		resetSearch();
-	});
-
-	searchInput?.addEventListener('input', (event) => {
-		renderPostList(event.target.value);
 	});
 
 	searchInput?.addEventListener('input', (event) => {
