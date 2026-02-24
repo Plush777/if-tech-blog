@@ -1,0 +1,133 @@
+.myPostList {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(332px, 1fr));
+	gap: 24px;
+}
+
+.myPostItem {
+	border-radius: 12px;
+	transition: var(--transition1);
+}
+
+.myPostBottom {
+	display: flex;
+	flex-direction: column;
+	height: var(--card-bottom-height);
+	padding: 16px;
+	border: 1px solid var(--c000-a1);
+	border-top: 0;
+	border-radius: 0 0 12px 12px;
+	background-color: var(--fff);
+}
+
+.myPostBottomNoThumb {
+	height: var(--total-card-height);
+	border-top: 1px solid var(--c000-a1);
+	border-radius: 12px;
+
+	.myPostMeta {
+		margin-top: auto;
+	}
+
+	.myPostDescription {
+		height: auto;
+		max-height: none;
+	}
+}
+
+.myPostBottomInner {
+	display: flex;
+	flex-direction: column;
+}
+
+.myPostLink {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	border-radius: var(--bdrs-top12);
+	overflow: hidden;
+}
+
+.myPostTopBox {
+	overflow: hidden;
+	height: var(--card-top-height);
+	position: relative;
+	border: 1px solid var(--c000-a1);
+	border-radius: var(--bdrs-top12);
+	background-color: var(--fff);
+	transition: var(--transition1);
+
+	.myPostCategory {
+		position: absolute;
+		top: 16px;
+		left: 16px;
+	}
+
+	img {
+		transition: 0.3s ease;
+	}
+}
+
+.myPostTitle {
+	font-size: 20px;
+	color: rgb(var(--black));
+	line-height: 1;
+	transition: var(--transition1);
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.myPostMeta {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	row-gap: 8px;
+}
+
+.myPostAuthor {
+	width: fit-content;
+	font-size: 14px;
+	color: var(--color-black);
+}
+
+.myPostDate {
+	font-size: 14px;
+	color: var(--color-gray-500);
+}
+
+.myPostCategory {
+	width: fit-content;
+	font-size: 14px;
+	color: var(--color-white);
+	border-radius: 8px;
+	padding: 0 6px;
+	background-color: var(--primary1);
+}
+
+.myPostDescription {
+	height: 64px;
+	max-height: 64px;
+	font-size: 1rem;
+	color: var(--c333);
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.5;
+	word-break: keep-all;
+	word-wrap: break-word;
+}
+
+
+
+@media (max-width: 425px) {
+	.myPostList {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+}

@@ -2,130 +2,6 @@
 	background-color: var(--bg1);
 }
 
-.blogPage .myPostList {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(332px, 1fr));
-	gap: 24px;
-}
-
-.blogPage .myPostItem {
-	border-radius: 12px;
-	transition: var(--transition1);
-}
-
-.blogPage .myPostBottom {
-	display: flex;
-	flex-direction: column;
-	height: var(--card-bottom-height);
-	padding: 16px;
-	border: 1px solid var(--c000-a1);
-	border-top: 0;
-	border-radius: 0 0 12px 12px;
-	background-color: var(--fff);
-}
-
-.blogPage .myPostBottomNoThumb {
-	height: var(--total-card-height);
-	border-top: 1px solid var(--c000-a1);
-	border-radius: 12px;
-
-	.myPostMeta {
-		margin-top: auto;
-	}
-
-	.myPostDescription {
-		height: auto;
-		max-height: none;
-	}
-}
-
-.blogPage .myPostBottomInner {
-	display: flex;
-	flex-direction: column;
-}
-
-.blogPage .myPostLink {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	border-radius: var(--bdrs-top12);
-	overflow: hidden;
-}
-
-.blogPage .myPostTopBox {
-	overflow: hidden;
-	height: var(--card-top-height);
-	position: relative;
-	border: 1px solid var(--c000-a1);
-	border-radius: var(--bdrs-top12);
-	background-color: var(--fff);
-	transition: var(--transition1);
-
-	.myPostCategory {
-		position: absolute;
-		top: 16px;
-		left: 16px;
-	}
-
-	img {
-		transition: 0.3s ease;
-	}
-}
-
-.blogPage .myPostTitle {
-	font-size: 20px;
-	color: rgb(var(--black));
-	line-height: 1;
-	transition: var(--transition1);
-	display: -webkit-box;
-	-webkit-line-clamp: 1;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.blogPage .myPostMeta {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	row-gap: 8px;
-}
-
-.blogPage .myPostAuthor {
-	width: fit-content;
-	font-size: 14px;
-	color: var(--color-black);
-}
-
-.blogPage .myPostDate {
-	font-size: 14px;
-	color: var(--color-gray-500);
-}
-
-.blogPage .myPostCategory {
-	width: fit-content;
-	font-size: 14px;
-	color: var(--color-white);
-	border-radius: 8px;
-	padding: 0 6px;
-	background-color: var(--primary1);
-}
-
-.blogPage .myPostDescription {
-	height: 64px;
-	max-height: 64px;
-	font-size: 1rem;
-	color: var(--c333);
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	line-height: 1.5;
-	word-break: keep-all;
-	word-wrap: break-word;
-}
-
 .blogPage .categoryArea {
 	display: flex;
 	flex-direction: column;
@@ -177,52 +53,7 @@
 	color: var(--c666);
 }
 
-.blogPage .postPagination {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 8px;
-	margin-top: 28px;
-}
 
-.blogPage .paginationList {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-}
-
-.blogPage .paginationButton {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	min-width: 32px;
-	height: 32px;
-	padding: 0 8px;
-	border: 1px solid var(--c000-a1);
-	border-radius: 8px;
-	background-color: var(--fff);
-	font-size: 0.9375rem;
-	font-weight: 500;
-	color: var(--c333);
-	transition: var(--transition1);
-}
-
-.blogPage .paginationButton:disabled {
-	opacity: 0.5;
-	cursor: not-allowed;
-}
-
-.blogPage .paginationButton.is-disabled {
-	opacity: 0.5;
-	cursor: not-allowed;
-	pointer-events: none;
-}
-
-.blogPage .paginationButton.is-active {
-	background-color: #60739f;
-	border-color: #60739f;
-	color: var(--fff);
-}
 
 .blogPage
 	:where(article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section) {
@@ -232,12 +63,4 @@
 .blogPage img {
 	user-select: none;
 	pointer-events: none;
-}
-
-@media (max-width: 425px) {
-	.blogPage .myPostList {
-		display: flex;
-		flex-direction: column;
-		gap: 16px;
-	}
 }

@@ -1,6 +1,7 @@
 main[class*='astrobook'] {
 	display: flex;
 	flex-direction: column;
+	padding: 16px;
 }
 main[class*='astrobook'] .code-area {
 	height: 100%;

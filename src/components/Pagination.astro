@@ -1,4 +1,6 @@
 ---
+import '../styles/pagination.css';
+
 const { totalPages = 1, currentPage = 1, withBehavior = true } = Astro.props;
 
 const safeTotalPages = Math.max(1, Number(totalPages) || 1);
