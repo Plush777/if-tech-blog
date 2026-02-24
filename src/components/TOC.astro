@@ -33,7 +33,7 @@ const { headings } = Astro.props;
 		const tocItems = document.querySelectorAll('.tocLink');
 		const tags = document.querySelectorAll('.heading');
 		const header = document.querySelector('#header');
-		const EXTRA_OFFSET = 12;
+		const SCROLL_GAP = 12;
 
 		tocItems.forEach((item, index) => (item.dataset.index = index));
 		tags.forEach((tag, index) => (tag.dataset.index = index));
@@ -41,20 +41,22 @@ const { headings } = Astro.props;
 		let selectedIndex = -1;
 
 		const setActiveItem = (nextIndex) => {
-			if (nextIndex < 0 || nextIndex >= tocItems.length || nextIndex === selectedIndex) return;
+			if (nextIndex < -1 || nextIndex >= tocItems.length || nextIndex === selectedIndex) return;
 
 			tocItems[selectedIndex]?.classList.remove('active');
 			selectedIndex = nextIndex;
 			tocItems[selectedIndex]?.classList.add('active');
 		};
 
-		const getHeaderBottom = () => {
-			if (!header) return EXTRA_OFFSET;
+		const getHeaderHeight = () => {
+			if (!header) return 0;
 
-			return header.getBoundingClientRect().bottom + EXTRA_OFFSET;
+			return header.getBoundingClientRect().height;
 		};
 
 		const getGroupedActiveIndex = (index) => {
+			if (index < 0) return -1;
+
 			let nextIndex = index;
 
 			while (nextIndex > 0 && tocItems[nextIndex - 1]?.title === tocItems[nextIndex]?.title) {
@@ -65,11 +67,11 @@ const { headings } = Astro.props;
 		};
 
 		const updateActiveFromScroll = () => {
-			const headerBottom = getHeaderBottom();
-			let nextIndex = 0;
+			const activationLine = window.scrollY + getHeaderHeight();
+			let nextIndex = -1;
 
 			tags.forEach((tag, index) => {
-				if (tag.getBoundingClientRect().top <= headerBottom) {
+				if (tag.offsetTop <= activationLine) {
 					nextIndex = index;
 				}
 			});
@@ -95,7 +97,7 @@ const { headings } = Astro.props;
 
 				if (!target) return;
 
-				const top = window.scrollY + target.getBoundingClientRect().top - getHeaderBottom();
+				const top = target.offsetTop - getHeaderHeight() - SCROLL_GAP;
 				window.scrollTo({ top, behavior: 'smooth' });
 				setActiveItem(index);
 			}
