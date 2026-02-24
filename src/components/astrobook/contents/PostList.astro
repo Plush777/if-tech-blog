@@ -1,0 +1,9 @@
+---
+//@ts-nocheck
+import MainAstrobookInner from '@/components/astrobook/layout/MainAstrobookInner.astro';
+import MyPostList from '@/components/MyPostList.astro';
+---
+
+<MainAstrobookInner>
+	<MyPostList data={data} startIndex={startIndex} pageSize={pageSize} />
+</MainAstrobookInner>
