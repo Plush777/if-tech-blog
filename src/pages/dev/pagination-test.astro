@@ -1,0 +1,74 @@
+---
+import Template from '@/layouts/Template.astro';
+import MainTemplate from '@/layouts/MainTemplate.astro';
+import PostListSection from '@/components/PostListSection.astro';
+
+const DEFAULT_POST_COUNT = 120;
+const MIN_POST_COUNT = 8;
+const MAX_POST_COUNT = 500;
+
+const requestedCount = Number.parseInt(Astro.url.searchParams.get('count') ?? `${DEFAULT_POST_COUNT}`, 10);
+const postCount = Number.isNaN(requestedCount)
+	? DEFAULT_POST_COUNT
+	: Math.min(MAX_POST_COUNT, Math.max(MIN_POST_COUNT, requestedCount));
+
+const mockPosts = Array.from({ length: postCount }, (_, index) => {
+	const sequence = postCount - index;
+	const day = (sequence % 28) + 1;
+
+	return {
+		slug: `dev-pagination-${sequence}`,
+		data: {
+			title: `페이지네이션 테스트 포스트 ${sequence}`,
+			description: `개발 환경 페이지네이션 테스트용 더미 데이터 ${sequence}번입니다.`,
+			pubDate: new Date(`2026-01-${String(day).padStart(2, '0')}`),
+			category: '개발테스트',
+			author: 'Dev Mode',
+			heroImage: ''
+		}
+	};
+});
+
+if (!import.meta.env.DEV) {
+	return Astro.redirect('/404');
+}
+---
+
+<Template title="개발용 페이지네이션 테스트" description="개발 환경에서만 접근 가능한 페이지네이션 테스트 페이지">
+	<MainTemplate>
+		<section class="devPaginationInfo">
+			<h2>개발용 페이지네이션 테스트</h2>
+			<p>
+				이 페이지는 <code>import.meta.env.DEV</code> 일 때만 열립니다.
+				<br />
+				<code>?count=숫자</code> 쿼리로 테스트 포스트 수를 바꿀 수 있습니다.
+				(최소 {MIN_POST_COUNT}, 최대 {MAX_POST_COUNT}, 현재 {postCount})
+			</p>
+		</section>
+		<PostListSection data={mockPosts} sectionName="devPaginationSection">
+			<h3 class="categoryTitle">개발용 더미 포스트</h3>
+		</PostListSection>
+	</MainTemplate>
+</Template>
+
+<style>
+	.devPaginationInfo {
+		margin-bottom: 32px;
+	}
+
+	.devPaginationInfo h2 {
+		font-size: 2rem;
+		font-weight: 700;
+		margin-bottom: 8px;
+	}
+
+	.devPaginationInfo p {
+		line-height: 1.7;
+	}
+
+	.devPaginationInfo code {
+		padding: 2px 8px;
+		border-radius: 6px;
+		background: #f1f3f5;
+	}
+</style>
