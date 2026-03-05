@@ -23,19 +23,33 @@ function getFrontmatterValue(frontmatter, key) {
 	return match ? stripQuotes(match[1]) : '';
 }
 
+/** ✅ 슬러그 안전화 */
+function slugify(input = '') {
+	return input
+		.trim()
+		.toLowerCase()
+		.replace(/\s+/g, '-') // 공백 → -
+		.replace(/[^a-z0-9\-_/]/g, '') // 영문/숫자/-/_// 외 제거 (원하면 규칙 바꿔도 됨)
+		.replace(/-+/g, '-') // --- → -
+		.replace(/^-|-$/g, ''); // 앞뒤 - 제거
+}
+
+/** ✅ slug 결정: frontmatter.slug 우선, 없으면 파일명 */
+function getSlug({ frontmatter, filePath }) {
+	const fmSlug = getFrontmatterValue(frontmatter, 'slug');
+	if (fmSlug) return slugify(fmSlug);
+
+	const filename = path.basename(filePath, path.extname(filePath));
+	return slugify(filename);
+}
+
 async function getMarkdownFiles(dir) {
 	const entries = await fs.readdir(dir, { withFileTypes: true });
 	const files = await Promise.all(
 		entries.map(async (entry) => {
 			const fullPath = path.join(dir, entry.name);
-			if (entry.isDirectory()) {
-				return getMarkdownFiles(fullPath);
-			}
-
-			if (entry.isFile() && fullPath.endsWith('.md')) {
-				return [fullPath];
-			}
-
+			if (entry.isDirectory()) return getMarkdownFiles(fullPath);
+			if (entry.isFile() && fullPath.endsWith('.md')) return [fullPath];
 			return [];
 		})
 	);
@@ -43,10 +57,11 @@ async function getMarkdownFiles(dir) {
 	return files.flat();
 }
 
-async function ensurePostDirectories({ pubDate, category }) {
+/** ✅ slug 폴더 추가 */
+async function ensurePostDirectories({ pubDate, category, slug }) {
 	const [year, month, day] = pubDate.split('-');
 	const dateFolder = `${month}-${day}`;
-	const targetRoot = path.join(POST_DIR, year, category, dateFolder);
+	const targetRoot = path.join(POST_DIR, year, category, dateFolder, slug);
 
 	await fs.mkdir(path.join(targetRoot, 'assets', 'images'), { recursive: true });
 	await fs.mkdir(path.join(targetRoot, 'assets', 'videos'), { recursive: true });
@@ -75,6 +90,7 @@ async function run() {
 	const targetMarkdownFiles = inputPathOrName
 		? findMatchedMarkdownFiles(markdownFiles, inputPathOrName)
 		: markdownFiles;
+
 	let createdCount = 0;
 
 	if (!markdownFiles.length) {
@@ -109,7 +125,13 @@ async function run() {
 			continue;
 		}
 
-		const targetRoot = await ensurePostDirectories({ pubDate, category });
+		const slug = getSlug({ frontmatter, filePath });
+		if (!slug) {
+			console.warn(`Skipping (invalid slug): ${path.relative(process.cwd(), filePath)}`);
+			continue;
+		}
+
+		const targetRoot = await ensurePostDirectories({ pubDate, category, slug });
 		createdCount += 1;
 		console.log(`Prepared: ${path.relative(process.cwd(), targetRoot)}`);
 	}
