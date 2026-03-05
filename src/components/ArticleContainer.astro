@@ -21,3 +21,16 @@ const { className = '', headings } = Astro.props;
 		</div>
 	</div>
 </article>
+
+<script>
+	const articleContainer = document.querySelector('.articleContainer');
+	if (articleContainer) {
+		const links = articleContainer.querySelectorAll('a');
+
+		links.forEach((link) => {
+			if (link.closest('#toc')) return;
+
+			link.setAttribute('target', '_blank');
+		});
+	}
+</script>
