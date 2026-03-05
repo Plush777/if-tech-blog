@@ -4,11 +4,11 @@ const { src, type = 'video/mp4', ...rest } = Astro.props;
 const base = import.meta.env.PUBLIC_ASSETS_BASE_URL;
 
 function toRelativeAssetPath(value = '') {
-	return value.replace(/^\//, '');
+	return value.replace(/^\//, '').normalize('NFC');
 }
 
 function isAbsoluteOrExternalPath(value = '') {
-	return /^(?:[a-z]+:|\/|#)/i.test(value);
+	return /^(?:[a-z]+:|\/\/|#)/i.test(value);
 }
 
 const url = !base || isAbsoluteOrExternalPath(src)
