@@ -28,6 +28,17 @@ const startIndex = (currentPage - 1) * pageSize;
 	html .paginatedPostSection [data-pagination-skeleton] {
 		display: none;
 	}
+
+	@media (scripting: enabled) {
+		html .paginatedPostSection:not([data-pagination-ready]) [data-pagination-skeleton] {
+			display: block;
+		}
+
+		html .paginatedPostSection:not([data-pagination-ready]) [data-post-list],
+		html .paginatedPostSection:not([data-pagination-ready]) [data-pagination] {
+			display: none;
+		}
+	}
 </style>
 
 <script>
@@ -124,6 +135,10 @@ const startIndex = (currentPage - 1) * pageSize;
 			disabled: currentPage === totalPages,
 			href: createPageHref(Math.min(totalPages, currentPage + 1))
 		});
+
+		window.setTimeout(() => {
+			section.dataset.paginationReady = 'true';
+		}, 1000);
 	});
 
 </script>
