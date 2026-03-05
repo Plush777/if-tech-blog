@@ -10,7 +10,6 @@ import rehypePostAssetPaths from './src/utils/rehypePostAssetPaths.mjs';
 // https://www.freecodecamp.org/news/how-to-add-google-analytics-to-your-astro-website/
 export default defineConfig({
 	site: 'https://ifcommunity-tech.netlify.app/',
-	integrations: [mdx(), sitemap()],
 	output: 'static',
 	markdown: {
 		rehypePlugins: [rehypePostAssetPaths]
@@ -19,6 +18,8 @@ export default defineConfig({
 		plugins: [tailwindcss()]
 	},
 	integrations: [
+		mdx(),
+		sitemap(),
 		process.env.NODE_ENV === 'development'
 			? astrobook({
 					subpath: '/components',
@@ -35,7 +36,7 @@ export default defineConfig({
 						'src/styles/global.css',
 						'src/styles/hover.css'
 					]
-				})
+			  })
 			: null
-	]
+	].filter(Boolean)
 });

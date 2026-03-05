@@ -7,10 +7,30 @@ function getImageClassName(type: string) {
 
 	return '';
 }
+
+const base = import.meta.env.PUBLIC_ASSETS_BASE_URL;
+
+function toRelativeAssetPath(value: string) {
+	return value.replace(/^\//, '');
+}
+
+function resolveImageUrl(value: string) {
+	if (!value) {
+		return value;
+	}
+
+	if (!base) {
+		return value;
+	}
+
+	return new URL(toRelativeAssetPath(value), base).toString();
+}
+
+const resolvedSrc = resolveImageUrl(src);
 ---
 
 <img
-	src={src}
+	src={resolvedSrc}
 	alt={alt}
 	width={width}
 	height={height}

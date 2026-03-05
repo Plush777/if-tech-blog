@@ -67,7 +67,7 @@ const posts = (await getCollection('blog'))
 
 		const link = document.createElement('a');
 		link.className = 'search-popup-link';
-		link.href = `/posts/${post.slug}`;
+		link.href = `/posts/${post.slug}/`;
 
 		const textArea = document.createElement('div');
 		textArea.className = 'search-popup-text-area';
