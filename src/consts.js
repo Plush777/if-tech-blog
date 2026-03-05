@@ -18,7 +18,7 @@ export const HEADER_MENUS = [
 	{
 		id: 2,
 		text: '회사 살펴보기',
-		href: 'http://ifcommunity.co.kr/'
+		href: 'https://ifcommunity.co.kr/main.do'
 	}
 ];
 
@@ -58,7 +58,7 @@ export const COMPANY_MENUS = [
 		content: {
 			title: 'IF COMMUNITY',
 			target: 'blank',
-			href: 'http://ifcommunity.co.kr/'
+			href: 'https://ifcommunity.co.kr/main.do'
 		}
 	},
 	{
@@ -66,7 +66,7 @@ export const COMPANY_MENUS = [
 		content: {
 			title: 'Services',
 			target: 'blank',
-			href: 'http://ifcommunity.co.kr/#section-03'
+			href: 'https://ifcommunity.co.kr/main.do#section-03'
 		}
 	},
 	{
@@ -74,7 +74,7 @@ export const COMPANY_MENUS = [
 		content: {
 			title: 'Contact',
 			target: 'blank',
-			href: 'http://ifcommunity.co.kr/#notice'
+			href: 'https://ifcommunity.co.kr/main.do#notice'
 		}
 	},
 	{
