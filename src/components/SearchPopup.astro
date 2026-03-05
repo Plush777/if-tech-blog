@@ -5,6 +5,18 @@ import Input from './Input.astro';
 import { getCollection } from 'astro:content';
 import { hasPostAssetFile, resolvePostFilePath } from '../utils/postAssetPath.js';
 
+const assetsBaseUrl =
+	import.meta.env.PUBLIC_ASSETS_BASE_URL ??
+	'https://cdn.jsdelivr.net/gh/Plush777/if-tech-blog-assets@main/';
+
+function toCdnAssetUrl(path) {
+	if (!path || /^(?:[a-z]+:|\/\/|#)/i.test(path)) {
+		return path;
+	}
+
+	return new URL(path.replace(/^\//, '').normalize('NFC'), assetsBaseUrl).toString();
+}
+
 const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.map((post) => {
@@ -21,12 +33,14 @@ const posts = (await getCollection('blog'))
 			description: post.data.description,
 			category: post.data.category ?? '',
 			heroImage: hasHeroImage
-				? resolvePostFilePath({
+				? toCdnAssetUrl(
+					resolvePostFilePath({
 					src: post.data.heroImage,
 					pubDate: post.data.pubDate,
 					category: post.data.category,
 					type: 'assets'
-				})
+					})
+				)
 				: null
 		};
 	});
