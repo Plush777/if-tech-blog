@@ -33,7 +33,8 @@ export function getPostBasePath(pubDate, category) {
 		return null;
 	}
 
-	return `/post/${dateParts.year}/${category}/${dateParts.month}-${dateParts.day}`;
+	const normalizedCategory = String(category).normalize('NFC');
+	return `/post/${dateParts.year}/${normalizedCategory}/${dateParts.month}-${dateParts.day}`;
 }
 
 export function resolvePostFilePath({ src, pubDate, category, type = 'assets' }) {
