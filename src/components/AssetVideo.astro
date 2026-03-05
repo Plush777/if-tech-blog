@@ -7,9 +7,13 @@ function toRelativeAssetPath(value = '') {
 	return value.replace(/^\//, '');
 }
 
-const url = base
-	? new URL(toRelativeAssetPath(src), base).toString()
-	: src;
+function isAbsoluteOrExternalPath(value = '') {
+	return /^(?:[a-z]+:|\/|#)/i.test(value);
+}
+
+const url = !base || isAbsoluteOrExternalPath(src)
+	? src
+	: new URL(toRelativeAssetPath(src), base).toString();
 ---
 
 <video controls {...rest}>
