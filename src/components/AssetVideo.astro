@@ -1,0 +1,18 @@
+---
+const { src, type = 'video/mp4', ...rest } = Astro.props;
+
+const base = import.meta.env.PUBLIC_ASSETS_BASE_URL;
+
+function toRelativeAssetPath(value = '') {
+	return value.replace(/^\//, '');
+}
+
+const url = base
+	? new URL(toRelativeAssetPath(src), base).toString()
+	: src;
+---
+
+<video controls {...rest}>
+	<source src={url} type={type} />
+	브라우저가 video 태그를 지원하지 않습니다.
+</video>

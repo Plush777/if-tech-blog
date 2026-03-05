@@ -13,10 +13,6 @@ const startIndex = (currentPage - 1) * pageSize;
 
 ---
 
-<script is:inline>
-	document.documentElement.classList.add('pagination-pending');
-</script>
-
 <section class:list={[sectionName, 'paginatedPostSection']} data-page-size={pageSize}>
 	<slot />
 	<div class="paginationSkeleton" data-pagination-skeleton aria-hidden="true">
@@ -29,17 +25,8 @@ const startIndex = (currentPage - 1) * pageSize;
 </section>
 
 <style is:global>
-	html.pagination-pending .paginatedPostSection [data-post-list],
-	html.pagination-pending .paginatedPostSection [data-pagination] {
-		display: none;
-	}
-
 	html .paginatedPostSection [data-pagination-skeleton] {
 		display: none;
-	}
-
-	html.pagination-pending .paginatedPostSection [data-pagination-skeleton] {
-		display: block;
 	}
 </style>
 
@@ -139,15 +126,4 @@ const startIndex = (currentPage - 1) * pageSize;
 		});
 	});
 
-	const removePendingState = () => {
-		window.setTimeout(() => {
-			document.documentElement.classList.remove('pagination-pending');
-		}, 1000);
-	};
-
-	if (document.readyState === 'complete') {
-		removePendingState();
-	} else {
-		window.addEventListener('load', removePendingState, { once: true });
-	}
 </script>
