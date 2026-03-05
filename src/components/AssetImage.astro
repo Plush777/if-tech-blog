@@ -8,7 +8,7 @@ function toRelativeAssetPath(value = '') {
 }
 
 function isAbsoluteOrExternalPath(value = '') {
-	return /^(?:[a-z]+:|\/|#)/i.test(value);
+	return /^(?:[a-z]+:|\/\/|#)/i.test(value);
 }
 
 const url = !base || isAbsoluteOrExternalPath(src)
