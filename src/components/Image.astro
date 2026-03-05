@@ -15,7 +15,7 @@ function toRelativeAssetPath(value: string) {
 }
 
 function isAbsoluteOrExternalPath(value: string) {
-	return /^(?:[a-z]+:|\/|#)/i.test(value);
+	return /^(?:[a-z]+:|\/\/|#)/i.test(value);
 }
 
 function resolveImageUrl(value: string) {
