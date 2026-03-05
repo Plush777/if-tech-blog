@@ -1,0 +1,8 @@
+---
+const { src, alt = '', ...rest } = Astro.props;
+
+const base = import.meta.env.PUBLIC_ASSETS_BASE_URL;
+const url = new URL(src, base).toString();
+---
+
+<img src={url} alt={alt} loading="lazy" {...rest} />
