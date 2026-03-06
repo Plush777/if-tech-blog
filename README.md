@@ -1,6 +1,6 @@
 # ✍️ 이프커뮤니티 기술 블로그
 
-## 목차
+## 🔢 목차
 
 - [❓ 이프커뮤니티 기술 블로그가 무엇인가요?](#-이프커뮤니티-기술-블로그가-무엇인가요)
 - [🗂️ 폴더 구조](#️-폴더-구조)
@@ -9,6 +9,7 @@
   - [✏️ 아티클 작성하기 (개발자가 아닌경우)](#️-아티클-작성하기-개발자가-아닌경우)
   - [🌟 Netlify 배포 트리거가 필요한 경우](#-netlify-배포-트리거가-필요한-경우)
 - [🗃️ `if-tech-blog` / `if-tech-blog-assets` 저장소 관계](#️-if-tech-blog--if-tech-blog-assets-저장소-관계)
+- [🎖️ License](#license)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -50,7 +51,7 @@
 아래는 기술 블로그 사용법 (개발자 기준) 에 대한 설명입니다.
 개발자가 아니거나, 설명을 이해하기 힘들다면 아래 섹션으로 이동하세요.
 
-<a href="#️-아티클-작성하기-개발자가-아닌경우">아티클 작성하기 개발자가-아닌경우 &gt;</a>
+<a href="#️-아티클-작성하기-개발자가-아닌경우">아티클 작성하기 개발자가 아닌경우 &gt;</a>
 
 <br/>
 
@@ -136,6 +137,31 @@
   - 포스트 작성 중 생성된 이미지 파일을 별도로 관리
 
 즉, **콘텐츠(글)와 자산(이미지)을 분리 관리**하여 운영 효율과 저장소 관리성을 높이는 구조입니다.
+
+---
+
+## 🌠 License
+
+Copyright (c) 2026 ifcommunity
+All rights reserved.
+
+Permission is granted to any person to view, clone, and fork this repository,
+and to modify the code for private, non-public use.
+
+Redistribution Prohibited:
+
+- You may not publish, distribute, sublicense, sell, or otherwise make available
+  the Software (original or modified), in whole or in part, to any third party.
+- You may not upload the Software (original or modified) to any public repository,
+  package registry, app store, marketplace, or similar distribution channel.
+- You may not represent the Software (original or modified) as your own work.
+
+No Contributions:
+
+- Pull requests, patches, or other contributions are not accepted.
+  Any submitted contribution is unsolicited and may be closed without review.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 
 ---
 

@@ -38,7 +38,7 @@ export const COMPANY_INFO = [
 			href: 'https://naver.me/xbjUVOBE',
 			target: 'blank',
 			title: '주소',
-			desc: '서울 성동구 아차산로17길 49'
+			desc: '서울 성동구 아차산로 17길 49'
 		}
 	},
 	{
@@ -91,6 +91,14 @@ export const COMPANY_MENUS = [
 			title: 'RSS',
 			target: 'blank',
 			href: '/rss.xml'
+		}
+	},
+	{
+		id: 6,
+		content: {
+			title: 'License',
+			target: 'blank',
+			href: '/LICENSE'
 		}
 	}
 ];
