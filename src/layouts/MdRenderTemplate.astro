@@ -1,0 +1,32 @@
+---
+const { src = '/README.md' } = Astro.props;
+---
+
+<div class="markdown-body">
+	<div class="markdown-content">
+		<md-block src={src}></md-block>
+	</div>
+</div>
+
+<style>
+	md-block:not([rendered]) {
+		display: none;
+	}
+
+	.markdown-body {
+		padding: 16px;
+	}
+
+	.markdown-content {
+		max-width: 768px;
+		margin: 0 auto;
+	}
+
+	* {
+		word-break: keep-all;
+	}
+</style>
+
+<script>
+	import 'md-block';
+</script>

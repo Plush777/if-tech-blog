@@ -163,7 +163,7 @@
 
 .articleContainer .tocInner a {
 	text-decoration: none;
-	transition: .3s ease-in-out;
+	transition: 0.3s ease-in-out;
 }
 
 .articleContainer .tocInner li {
@@ -273,3 +273,5 @@
 .articleDesc {
 	color: var(--color-white);
 }
+
+
