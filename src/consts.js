@@ -98,7 +98,7 @@ export const COMPANY_MENUS = [
 		content: {
 			title: 'License',
 			target: 'blank',
-			href: '/LICENSE'
+			href: '/license'
 		}
 	}
 ];
