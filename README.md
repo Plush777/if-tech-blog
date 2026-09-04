@@ -70,8 +70,8 @@
    특정 글만 처리하고 싶다면 파일명(또는 상대경로)을 인자로 넘길 수 있습니다.
 
    ```bash
-   npm run post:preset -- my-post.md
-   npm run post:preset -- category/my-post.md
+   npm run post:preset -- my-post.mdx
+   npm run post:preset -- category/my-post.mdx
    ```
 
 3. **이미지 저장 경로 규칙 준수**

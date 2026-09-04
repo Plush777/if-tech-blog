@@ -6,6 +6,7 @@ const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(SCRIPT_DIR, '..');
 const BLOG_DIR = path.join(PROJECT_ROOT, 'src/content/blog');
 const POST_DIR = path.join(PROJECT_ROOT, 'public/post');
+const MARKDOWN_EXTENSIONS = new Set(['.md', '.mdx']);
 
 function stripQuotes(value = '') {
 	return value.trim().replace(/^['"]|['"]$/g, '');
@@ -49,7 +50,9 @@ async function getMarkdownFiles(dir) {
 		entries.map(async (entry) => {
 			const fullPath = path.join(dir, entry.name);
 			if (entry.isDirectory()) return getMarkdownFiles(fullPath);
-			if (entry.isFile() && fullPath.endsWith('.md')) return [fullPath];
+			if (entry.isFile() && MARKDOWN_EXTENSIONS.has(path.extname(entry.name).toLowerCase())) {
+				return [fullPath];
+			}
 			return [];
 		})
 	);
@@ -94,12 +97,12 @@ async function run() {
 	let createdCount = 0;
 
 	if (!markdownFiles.length) {
-		console.log('No markdown posts found in src/content/blog.');
+		console.log('No .md or .mdx posts found in src/content/blog.');
 		return;
 	}
 
 	if (inputPathOrName && !targetMarkdownFiles.length) {
-		console.warn(`No matching markdown file found for: ${inputPathOrName}`);
+		console.warn(`No matching .md or .mdx file found for: ${inputPathOrName}`);
 		return;
 	}
 

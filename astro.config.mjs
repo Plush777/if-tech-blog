@@ -15,7 +15,11 @@ export default defineConfig({
 		rehypePlugins: [rehypePostAssetPaths]
 	},
 	vite: {
-		plugins: [tailwindcss()]
+		plugins: [tailwindcss()],
+		server: {
+			// Multiple dev servers corrupt Astro's shared content cache during MDX updates.
+			strictPort: true
+		}
 	},
 	integrations: [
 		mdx(),
@@ -36,7 +40,7 @@ export default defineConfig({
 						'src/styles/global.css',
 						'src/styles/hover.css'
 					]
-			  })
+				})
 			: null
 	].filter(Boolean)
 });
